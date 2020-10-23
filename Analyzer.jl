@@ -255,14 +255,6 @@ function gated_counter(tags, μ1, σ1, μ2, σ2)
         end
     end
 end
-function poisson_pdf(x, mu)
-    return (mu)^x/factorial(big(x)) * exp(-mu)
-end
-
-function bose_einst_pdf(x, mu)
-    return 1/(mu + 1) * (mu/(mu+1))^x
-end
-
 
 function main()
     println("Nothing to do...")
