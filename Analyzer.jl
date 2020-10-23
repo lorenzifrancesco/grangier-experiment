@@ -161,6 +161,8 @@ function delay_estimator((tags, k); mode = "gate_first")
     filter!(x-> (x< max_clicks), diff1)
     filter!(x-> (x< max_clicks), diff2)
 
+    filter!(x -> (x>0), diff2)
+
     difference_info(diff1, diff2, k)
     μ1 = Statistics.mean(diff1)
     μ2 = Statistics.mean(diff2)
