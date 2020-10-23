@@ -17,7 +17,6 @@ function loader()
     for y in a
         filter(x -> !isspace(x), y)
     end
-    machine_time = 81e-12
     i=0
     b = Array{Int, 2}(undef, 2, length(a))
 
@@ -64,46 +63,76 @@ function loader()
 end
 
 function analyze((tags, k))
-    println("First 100 triggers on channel 2: ", tags[1, 1:10])
+    println("Analyzing...")
+    machine_time = 80.955e-12
 
-    println("Plotting arrival differences to nearest trigger event")
-    g1 = -100000000
+    g1 = -1         # BE CAREFUL : NOT A REAL GATE EVENT
     g2 = tags[3, 1]
     diff1 = Array{Int, 1}(undef, k[1])
     diff2 = Array{Int, 1}(undef, k[2])
     fill!(diff1, 0)
     fill!(diff2, 0)
     n = 1
+
+    # Retarded gate method - positive diff
+    # for i = 2:k[3]
+    #     while (tags[1, n]<g2 && n<k[1])
+    #         diff1[n] = g2 - tags[1, n]
+    #         n += 1
+    #     end
+    #     g2 = tags[3, i]
+    # end
+
+    # Anticipated gate method - positive diff
+    n = 8
     for i = 2:k[3]
         while (tags[1, n]<g2 && n<k[1])
-            if ((tags[1, n] - g1) <  (g2 - tags[1, n]))
-                diff1[n] = tags[1, n] - g1
-            else
-                diff1[n] = tags[1, n] - g2
-            end
+            diff1[n] = tags[1, n] - g1
             n += 1
         end
         g1 = g2
         g2 = tags[3, i]
     end
-    println(diff1[1:30])
-    println("maximum difference CH1: ", maximum(diff1))
-    println("minimum difference CH1: ", minimum(diff1))
-    mod = 100000
+    diff1 = diff1[8:length(diff1)]
+    
+    # Minimum distance method
+    # for i = 2:k[3]
+    #     while (tags[1, n]<g2 && n<k[1])
+    #         if ((tags[1, n] - g1) <  (g2 - tags[1, n]))
+    #             diff1[n] = tags[1, n] - g1
+    #         else
+    #             diff1[n] = tags[1, n] - g2
+    #         end
+    #         n += 1
+    #     end
+    #     g1 = g2
+    #     g2 = tags[3, i]
+    # end
+
+    # unreal difference filter
+
+    println("maximum difference CH1     : ", maximum(diff1))
+    println("minimum difference CH1     : ", minimum(diff1))
+    @printf("maximum time difference CH1 (ns)  : %10.4f \n", maximum(diff1)/machine_time * 1e9)
+    @printf("minimum time difference CH1 (ns)  : %10.4f \n", minimum(diff1)/machine_time * 1e9)
+
+    filter!(x-> (x< 25e-9/machine_time), diff1)
+    println("Filtered differences are n. : ", length(diff1))
+    println("Which is ")
+
+    mod = Int(floor(0.2e-9/machine_time))
     max_diff1 = maximum(diff1)
     min_diff1 = minimum(diff1)
     bin_num = Int(floor((max_diff1-min_diff1) / mod)) + 1
     bias = Int(floor(-min_diff1/mod))
     # sort!(diff1)
-    diff_advance = 0
-    diff_bin_size = 10000
 
     hist = Array{Int, 1}(undef, bin_num)
     println("hist length: ", bin_num)
     
     fill!(hist, 0)
     i = 1
-    while (i<=k[1])
+    while (i<=length(diff1))
         hist[Int(floor((diff1[i] - min_diff1) / mod))+1] += 1
         i += 1
     end
@@ -116,7 +145,11 @@ function analyze((tags, k))
         println("Plotting...")
         first_n = length(hist)
         fig = PyPlot.figure()
-        fig = Plots.bar((-bias:first_n-bias)*mod, hist[1:first_n], show=true)
+        fig = Plots.bar((-bias:first_n-bias)*mod*machine_time*1e9,
+                         hist[1:first_n],
+                         show=true,
+                         xlabel = "difference to ** gate event (ns)",
+                         ylabel = "Frequency")
         display(fig)
     else
         println("Showing...")
