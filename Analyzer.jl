@@ -192,6 +192,7 @@ function difference_info(diff1, diff2, k)
 
     # Want to show exactly 100 bins in histogram
     mod = Int(ceil(maximum([length(diff1), length(diff2)]) / 10000000))
+    mod = 1
     println("Total differences 1 : ", length(diff1))
     println("Total differences 2 : ", length(diff2))
 
