@@ -246,19 +246,56 @@ function difference_info(diff1, diff2, k)
     end
 end
 
-# need to decide what method to use
-function gated_counter(tags, μ1, σ1, μ2, σ2)
+# need to decide what method to use -> we use  GATE -> REFLECTED -> TRANSMITTED
+function gated_counter(tags, params)
     println("Gated counting...")
-    tr_hits = 0
-    ref_hits = 0
+    μ1 = params[1]
+    σ1 = params[2]
+    μ2 = params[3]
+    σ2 = params[4]
+    x = 1
+    r_hit = false
+    refl = 0
+    multiple_refl = 0
+    y = 1
+    t_hit = false
+    tran = 0
+    multiple_tran = 0
     coincidences = 0
-    n_σ = 3
-    for i=1:k[3]
-        if (-n_σ*σ1 < (tags[3, i] - tags[1, j] - μ1) < n_σ*σ1)
+    n_σ = 2
+    # Gate function (not counting with multiple hits)
+    for i=1:length(tags[3, :])-1
+        r_hit = false
+        t_hit = false        
+        while !(-n_σ*σ1 + tags[3, i] + μ1 < tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1) && tags[1, x] < tags[3, i+1]
+            x += 1
         end
-        if (-n_σ*σ2 < (tags[3, i] - tags[2, k] - μ2) < n_σ*σ2)
+        while -n_σ*σ1 + tags[3, i] + μ1 < tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1
+            r_hit = true
+            x += 1
+        end
+        if r_hit
+            refl += 1
+        end
+
+        while !(-n_σ*σ2 + tags[3, i] + μ1 < tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2) && tags[2, y] < tags[3, i+1]
+            y += 1
+        end
+        while -n_σ*σ2 + tags[3, i] + μ2 < tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2
+            t_hit = true
+            y += 1
+        end
+        if t_hit
+            tran += 1
+        end
+        if r_hit && t_hit
+            coincidences += 1
         end
     end
+    @printf("n. of reflected    counts: %d \n", refl)
+    @printf("n. of transmitted  counts: %d \n", tran)
+    @printf("n. of coincidences counts: %d \n", coincidences)
+
 end
 
 function main()
