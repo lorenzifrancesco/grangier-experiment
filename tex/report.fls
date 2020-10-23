@@ -1,8 +1,8 @@
-PWD /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex
+PWD /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/grangier-experiment/tex
 INPUT /usr/share/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/report.tex
-OUTPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/report.log
+INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/grangier-experiment/tex/report.tex
+OUTPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/grangier-experiment/tex/report.log
 INPUT /usr/share/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/share/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/share/texmf-dist/tex/latex/base/size10.clo
@@ -209,9 +209,9 @@ INPUT /usr/share/texmf-dist/tex/latex/ascii-font/ascii.sty
 INPUT /usr/share/texmf-dist/tex/latex/ascii-font/ascii.sty
 INPUT /usr/share/texmf-dist/tex/latex/tools/xspace.sty
 INPUT /usr/share/texmf-dist/tex/latex/tools/xspace.sty
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/report.aux
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/report.aux
-OUTPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/report.aux
+INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/grangier-experiment/tex/report.aux
+INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/grangier-experiment/tex/report.aux
+OUTPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/grangier-experiment/tex/report.aux
 INPUT /usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/share/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/share/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
@@ -235,62 +235,20 @@ INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecbx1000.tfm
 INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/setup.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/setup.png
-OUTPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/report.pdf
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/setup.png
-INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecrm0900.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecbx0900.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecti1000.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm
-INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
-INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecrm0700.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecrm0500.tfm
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/still-15us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/still-15us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/still-15us.png
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmr9.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmmi9.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmsy9.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx9.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx6.tfm
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/spin-15us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/spin-15us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/spin-15us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/still-200us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/still-200us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/still-200us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/spin-200us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/spin-200us.png
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/../images/spin-200us.png
-INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/eccc1000.tfm
 INPUT /usr/share/texmf-dist/tex/latex/base/t1cmtt.fd
 INPUT /usr/share/texmf-dist/tex/latex/base/t1cmtt.fd
 INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ectt1000.tfm
-INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/radiation_statistics/tex/report.aux
+INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecrm0900.tfm
+INPUT /usr/share/texmf-dist/fonts/tfm/jknappen/ec/ecbx0900.tfm
+OUTPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/grangier-experiment/tex/report.pdf
+INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
+INPUT /home/lorenzi/Scrivania/Complementi ai corsi/Quantum_Optics_and_Lasers/grangier-experiment/tex/report.aux
 INPUT /usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi9.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx0900.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc1000.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc1728.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb
