@@ -229,9 +229,11 @@ function difference_info(diff1, diff2, k)
         fig = Plots.bar(x_delays1,
                          hist1,
                          show=true,
-                         xlabel = "difference to ** gate event (ns)",
-                         ylabel = "Frequency")
-        Plots.bar!(x_delays2, hist2)
+                         xlabel = "absolute difference from gate event (ns)",
+                         ylabel = "Frequency", 
+                         label = "transmitted photon delay", 
+                         size = (1200, 800))
+        Plots.bar!(x_delays2, hist2, label = "reflected photon delay")
         display(fig)
     else
         println("Too long to plot...")
