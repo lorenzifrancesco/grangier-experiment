@@ -154,8 +154,10 @@ function delay_estimator((tags, k); mode = "gate_first")
         end
     end
 
-    max_delay = 10 # [ns]
-    max_clicks = max_delay * 1e-9/machine_time
+    # max_delay = 7.5 # [ns]
+    # max_clicks = max_delay * 1e-9/machine_time
+    max_clicks = 100
+    max_delay = max_clicks * machine_time
     @printf("PRE-filtering at max delay = %d ns \n ", max_delay)
     # unreal difference filter
     filter!(x-> (x< max_clicks), diff1)
@@ -169,7 +171,7 @@ function delay_estimator((tags, k); mode = "gate_first")
     σ1 = sqrt(Statistics.var(diff1 .- μ1))
     σ2 = sqrt(Statistics.var(diff2 .- μ2)) 
 
-    return [μ1, μ2, σ1, σ2]
+    return [μ1, σ1, μ2, σ2]
 end
 
 function difference_info(diff1, diff2, k)
@@ -189,17 +191,15 @@ function difference_info(diff1, diff2, k)
     @printf("2) maximum time difference  (ns)  : %10.4f \n", max_diff2*machine_time * 1e9)
     @printf("2) minimum time difference  (ns)  : %10.4f \n\n", min_diff2*machine_time * 1e9)
 
-    @printf("1) Percentage of accepted hits : %d / %d = %4.2f \n", length(diff1), k[1], length(diff1)/k[1])
-    @printf("2) Percentage of accepted hits : %d / %d = %4.2f\n", length(diff2), k[2], length(diff2)/k[2])
+    @printf("1) Fraction of accepted hits : %d / %d = %4.2f \n", length(diff1), k[1], length(diff1)/k[1])
+    @printf("2) Fraction of accepted hits : %d / %d = %4.2f\n", length(diff2), k[2], length(diff2)/k[2])
 
     # Want to show exactly 100 bins in histogram
-    mod = Int(ceil(maximum([length(diff1), length(diff2)]) / 10000000))
-    mod = 1
-    println("Total differences 1 : ", length(diff1))
-    println("Total differences 2 : ", length(diff2))
+    mod = Int(ceil(maximum([length(diff1), length(diff2)]) / 10000000)) # TO BE MODIFIED
 
-    x_delays1 = (min_diff1:max_diff1)*mod*machine_time*1e9
-    x_delays2 = (min_diff2:max_diff2)*mod*machine_time*1e9
+    # plot clicks 
+    x_delays1 = (min_diff1:mod:max_diff1)
+    x_delays2 = (min_diff2:mod:max_diff2)
 
     bin_num1 = Int(floor((max_diff1-min_diff1) / mod)) + 1
     println("bins 1: ", bin_num1)
@@ -229,7 +229,7 @@ function difference_info(diff1, diff2, k)
         fig = Plots.bar(x_delays1,
                          hist1,
                          show=true,
-                         xlabel = "absolute difference from gate event (ns)",
+                         xlabel = "absolute difference from gate event (clicks)",
                          ylabel = "Frequency", 
                          label = "transmitted photon delay", 
                          size = (1200, 800))
@@ -237,12 +237,6 @@ function difference_info(diff1, diff2, k)
         display(fig)
     else
         println("Too long to plot...")
-        # for i=1:length(hist1)
-        #     @printf("%20.10f - %d \n", i, hist1[i])
-        # end
-        # for i=1:length(hist2)
-        #     @printf("%20.10f - %d \n", i, hist2[i])
-        # end
     end
 end
 
@@ -253,49 +247,67 @@ function gated_counter(tags, params)
     σ1 = params[2]
     μ2 = params[3]
     σ2 = params[4]
-    x = 1
-    r_hit = false
-    refl = 0
-    multiple_refl = 0
-    y = 1
-    t_hit = false
-    tran = 0
-    multiple_tran = 0
-    coincidences = 0
-    n_σ = 2
+
+    @printf("mean reflected   : %6.4f \n", params[1])
+    @printf("stdd reflected   : %6.4f \n", params[2])
+    @printf("mean tramsmitted : %6.4f \n", params[3])
+    @printf("stdd tramsmitted : %6.4f \n", params[4])
+    N_1 = length(tags[3, :])
+    intervals = [1, 2, 3, 4]
+    confidence = [68.2, 95.4, 99.7,  99.99]
     # Gate function (not counting with multiple hits)
-    for i=1:length(tags[3, :])-1
+    for n_σ in intervals
+        x = 1
         r_hit = false
-        t_hit = false        
-        while !(-n_σ*σ1 + tags[3, i] + μ1 < tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1) && tags[1, x] < tags[3, i+1]
-            x += 1
-        end
-        while -n_σ*σ1 + tags[3, i] + μ1 < tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1
-            r_hit = true
-            x += 1
-        end
-        if r_hit
-            refl += 1
-        end
+        refl = 0
+        multiple_refl = 0
+        y = 1
+        t_hit = false
+        tran = 0
+        multiple_tran = 0
+        coincidences = 0
+        for i=1:length(tags[3, :])-1
+            r_hit = false
+            t_hit = false        
+            while !(-n_σ*σ1 + tags[3, i] + μ1 < tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1) && tags[1, x] < tags[3, i+1]
+                x += 1
+            end
+            while -n_σ*σ1 + tags[3, i] + μ1 < tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1
+                r_hit = true
+                x += 1
+            end
+            if r_hit
+                refl += 1
+            end
 
-        while !(-n_σ*σ2 + tags[3, i] + μ1 < tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2) && tags[2, y] < tags[3, i+1]
-            y += 1
+            while !(-n_σ*σ2 + tags[3, i] + μ2 < tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2) && tags[2, y] < tags[3, i+1]
+                y += 1
+            end
+            while -n_σ*σ2 + tags[3, i] + μ2 < tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2
+                t_hit = true
+                y += 1
+            end
+            if t_hit
+                tran += 1
+            end
+            if r_hit && t_hit
+                coincidences += 1
+            end
         end
-        while -n_σ*σ2 + tags[3, i] + μ2 < tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2
-            t_hit = true
-            y += 1
-        end
-        if t_hit
-            tran += 1
-        end
-        if r_hit && t_hit
-            coincidences += 1
-        end
+        @printf("Measurement with %3.1f%% confidence \n", confidence[n_σ])
+        prob_refl = refl / N_1
+        prob_tran = tran / N_1
+        prob_triple = coincidences / N_1
+        α = prob_triple/ (prob_refl * prob_tran)
+        @printf("\t gate         hits :  %9d \n", N_1)
+        @printf("\t reflected    hits :  %9d \n", refl)
+        @printf("\t transmitted  hits :  %9d \n", tran)
+        @printf("\t coincidences hits :  %9d \n", coincidences)
+        @printf(" ----------------------\n")
+        @printf("\t P[double]         : %9.8f \n", prob_refl + prob_tran)
+        @printf("\t P[triple]         : %9.8f \n", prob_triple)
+        @printf("\t Alpha             : %9.8f \n", α)
     end
-    @printf("n. of reflected    counts: %d \n", refl)
-    @printf("n. of transmitted  counts: %d \n", tran)
-    @printf("n. of coincidences counts: %d \n", coincidences)
-
 end
 
 function main()
