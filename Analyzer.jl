@@ -3,7 +3,7 @@ using Plots
 using Printf
 import Plotly
 import Statistics
-export delay_estimator, main, loader, difference_info, gated_counter
+export delay_estimator, main, loader, difference_info, gated_counter, single_chan_stat
 
 Plots.plotly()
 default(show = true)
@@ -11,7 +11,7 @@ default(show = true)
 # println(PyPlot.backend)
 const machine_time = 80.955e-12
 
-function loader()
+function loader(;aft_filter = true)
     println("Loading...")
     s = "./tags.txt"
     a = readlines(s)
@@ -34,11 +34,13 @@ function loader()
     cnt = 0
     aft = Array{Int, 1}(undef, 3)
     fill!(aft, 0)
+    if (aft_filter)
+        aft_const = 3900
+    else
+        aft_const = 0
+    end
     for i = 1:length(a)
-        # if (i>7)
-        #     println("condition: ", b[1, i] ," < ", tags[ b[2, i]-1, k[b[2, i]-1] - 1 ], "  ?")
-        # end
-        if (i<8 || b[1, i] - 3900 > tags[ b[2, i]-1, k[b[2, i]-1] - 1 ])
+         if (i<8 || tags[ b[2, i]-1, k[b[2, i]-1] - 1 ] + aft_const < b[1, i] )
             tags[ b[2, i]-1, k[b[2, i]-1] ] = b[1, i]
             k[b[2, i] - 1] += 1
         else
@@ -156,8 +158,8 @@ function delay_estimator((tags, k); mode = "gate_first")
 
     # max_delay = 7.5 # [ns]
     # max_clicks = max_delay * 1e-9/machine_time
-    max_clicks = 100
-    max_delay = max_clicks * machine_time
+    max_clicks = 80
+    max_delay = max_clicks * machine_time / 1e-9
     @printf("PRE-filtering at max delay = %d ns \n ", max_delay)
     # unreal difference filter
     filter!(x-> (x< max_clicks), diff1)
@@ -172,6 +174,73 @@ function delay_estimator((tags, k); mode = "gate_first")
     σ2 = sqrt(Statistics.var(diff2 .- μ2)) 
 
     return [μ1, σ1, μ2, σ2]
+end
+
+function single_chan_stat((tags, k); chan = 3)
+    machine_time = 80.955e-12
+    series = tags[chan, :]
+    diff = Array{Int, 1}(undef, length(series)-1)
+    for i = 1:length(series)-1
+        diff[i] = series[i+1] - series[i]
+    end
+    filter!(z -> (z>0), diff)
+    max_diff = maximum(diff)
+    println("min: ", minimum(diff))
+    bin_num = 1000
+
+    bin_step =Int(ceil(max_diff / bin_num))+1
+    println("max diff : ", max_diff, " bin step", bin_step)
+    hist = Array{Int, 1}(undef, bin_num)
+    fill!(hist, 0)
+    i = 1
+    for i = 1:length(diff)
+        hist[Int(floor((diff[i]) / bin_step)) + 1] += 1
+    end
+    @printf("minimum difference between gate event: %10d clicks -> %5.2f ns \n",minimum(diff) , minimum(diff)*machine_time/1e-9
+    )
+
+    prob = hist / sum(hist)
+    accum = 0
+    i = 1
+    for i = 1:bin_num
+        accum += (i-1) * prob[i]
+    end
+    mu = accum
+    var = 0
+    sk_acc = 0
+    kr_acc = 0 
+    for i = 1:bin_num
+        var += (i-1 - mu)^2 * prob[i]
+        sk_acc += (i-1 - mu)^3 * prob[i]
+        kr_acc += (i-1 - mu)^4 * prob[i]
+    end
+    sigma = sqrt(var)
+    sk = sk_acc 
+    kr = kr_acc 
+    theo_mom = poisson_moments(mu)
+    @printf("Statistical analysis of gate events process:\n")
+    @printf("\t δ mean                : %5.3f \n", mu  - theo_mom[1])
+    @printf("\t δ variance            : %5.3f \n", var - theo_mom[2])
+    @printf("\t δ skewness non std    : %5.3f \n", sk  - theo_mom[3])
+    @printf("\t δ kurtosis non std    : %5.3f \n", kr  - theo_mom[4])
+
+    fig = Plots.plot((1:bin_num)*bin_step,
+                         [log10(h) for h in hist],
+                         show=true,
+                         xlabel = "absolute difference between gate events (clicks)",
+                         size = (1200, 800))
+end
+
+function poisson_moments(mu)
+    return [mu, mu, 1/sqrt(mu), 1/mu]
+end
+
+function bose_ein_moments(mu)
+    sigma = sqrt(mu + mu^2)
+    return [mu,
+            sigma^2,
+            (mu + 3*mu^2 + 2*mu^3)/sigma^3,
+            (mu + 10*mu^2 + 18*mu^3 + 9*mu^4)/sigma^4]
 end
 
 function difference_info(diff1, diff2, k)
@@ -241,7 +310,7 @@ function difference_info(diff1, diff2, k)
 end
 
 # need to decide what method to use -> we use  GATE -> REFLECTED -> TRANSMITTED
-function gated_counter(tags, params)
+function gated_counter((tags, k), params; mode = "full-width")
     println("Gated counting...")
     μ1 = params[1]
     σ1 = params[2]
@@ -253,8 +322,7 @@ function gated_counter(tags, params)
     @printf("mean tramsmitted : %6.4f \n", params[3])
     @printf("stdd tramsmitted : %6.4f \n", params[4])
     N_1 = length(tags[3, :])
-    intervals = [1, 2, 3, 4]
-    confidence = [68.2, 95.4, 99.7,  99.99]
+    intervals = [6]
     # Gate function (not counting with multiple hits)
     for n_σ in intervals
         x = 1
@@ -266,35 +334,66 @@ function gated_counter(tags, params)
         tran = 0
         multiple_tran = 0
         coincidences = 0
-        for i=1:length(tags[3, :])-1
-            r_hit = false
-            t_hit = false        
-            while !(-n_σ*σ1 + tags[3, i] + μ1 < tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1) && tags[1, x] < tags[3, i+1]
-                x += 1
-            end
-            while -n_σ*σ1 + tags[3, i] + μ1 < tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1
-                r_hit = true
-                x += 1
-            end
-            if r_hit
-                refl += 1
-            end
+        if (mode == "confidence") 
+            for i=1:length(tags[3, :])-1
+                r_hit = false
+                t_hit = false  
+                while  tags[1, x] < -n_σ*σ1 + tags[3, i] + μ1
+                    x += 1
+                end
+                while -n_σ*σ1 + tags[3, i] + μ1 <= tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1 && tags[1, x] < tags[3, i+1] 
+                    r_hit = true
+                    x += 1
+                end
+                if r_hit
+                    refl += 1
+                end
 
-            while !(-n_σ*σ2 + tags[3, i] + μ2 < tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2) && tags[2, y] < tags[3, i+1]
-                y += 1
+                while  tags[2, y] < -n_σ*σ2 + tags[3, i] + μ2 
+                    y += 1
+                end
+                while -n_σ*σ2 + tags[3, i] + μ2 <= tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2  && tags[2, y] < tags[3, i+1]
+                    t_hit = true
+                    y += 1
+                end
+                if t_hit
+                    tran += 1
+                end
+                if r_hit && t_hit
+                    coincidences += 1
+                end
             end
-            while -n_σ*σ2 + tags[3, i] + μ2 < tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2
-                t_hit = true
-                y += 1
-            end
-            if t_hit
-                tran += 1
-            end
-            if r_hit && t_hit
-                coincidences += 1
+        else
+            for i=1:length(tags[3, :])-1
+                r_hit = false
+                t_hit = false 
+                while tags[1, x] < tags[3, i]
+                    x += 1
+                end
+                while tags[3, i] < tags[1, x] <= tags[3, i+1] 
+                    r_hit = true
+                    x += 1
+                end
+                if r_hit
+                    refl += 1
+                end
+
+                while tags[2, y] < tags[3, i]
+                    y += 1
+                end
+                while tags[3, i] < tags[2, y] <= tags[3, i+1]
+                    t_hit = true
+                    y += 1
+                end
+                if t_hit
+                    tran += 1
+                end
+                if r_hit && t_hit
+                    coincidences += 1
+                end
             end
         end
-        @printf("Measurement with %3.1f%% confidence \n", confidence[n_σ])
+        @printf("Measurement with ciao confidence \n")
         prob_refl = refl / N_1
         prob_tran = tran / N_1
         prob_triple = coincidences / N_1
