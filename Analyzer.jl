@@ -3,9 +3,10 @@ using Plots
 using Printf
 import Plotly
 import Statistics
+import ProgressMeter
 export delay_estimator, main, loader, difference_info, gated_counter, single_chan_stat
 
-Plots.plotly()
+Plots.gr()
 default(show = true)
 # PyPlot.clf()
 # println(PyPlot.backend)
@@ -229,6 +230,7 @@ function single_chan_stat((tags, k); chan = 3)
                          show=true,
                          xlabel = "absolute difference between gate events (clicks)",
                          size = (1200, 800))
+    savefig(fig, string("./images/", chan, "-single_chan.png"))
 end
 
 function poisson_moments(mu)
@@ -264,7 +266,7 @@ function difference_info(diff1, diff2, k)
     @printf("2) Fraction of accepted hits : %d / %d = %4.2f\n", length(diff2), k[2], length(diff2)/k[2])
 
     # Want to show exactly 100 bins in histogram
-    mod = Int(ceil(maximum([length(diff1), length(diff2)]) / 10000000)) # TO BE MODIFIED
+    mod = Int(ceil(maximum([length(diff1), length(diff2)]) / 1e4)) # TO BE MODIFIED
 
     # plot clicks 
     x_delays1 = (min_diff1:mod:max_diff1)
@@ -291,19 +293,33 @@ function difference_info(diff1, diff2, k)
         hist2[Int(floor((diff2[i] - min_diff2) / mod))+1] += 1
         i += 1
     end
+    μ1 = Statistics.mean(diff1)
+    μ2 = Statistics.mean(diff2)
+    σ1 = sqrt(Statistics.var(diff1 .- μ1))
+    σ2 = sqrt(Statistics.var(diff2 .- μ2)) 
 
     if (length(hist1)<600 && length(hist2)<600)
         println("Plotting...")
         # fig = Plotly.figure()
+        n_σ = 2
         fig = Plots.bar(x_delays1,
                          hist1,
                          show=true,
+                         title = string("Event delay and ±", n_σ, "σ decision region"),
                          xlabel = "absolute difference from gate event (clicks)",
                          ylabel = "Frequency", 
                          label = "transmitted photon delay", 
-                         size = (1200, 800))
+                         size = (1000, 600))
         Plots.bar!(x_delays2, hist2, label = "reflected photon delay")
+        rectangle(w, h, x, y) = Plots.Shape(x .+ [0,w,w,0], y .+ [0,0,h,h])
+
+        recr = rectangle(2*n_σ*σ1, maximum([maximum(hist1), maximum(hist2)]), μ1-n_σ*σ1, 0)
+        rect = rectangle(2*n_σ*σ2, maximum([maximum(hist1), maximum(hist2)]), μ2-n_σ*σ2, 0)
+        Plots.plot!(recr, linewidth = 2, opacity = 0.1, color=:blue, label="transmitted decision region")
+        Plots.plot!(rect, linewidth = 2, opacity = 0.1, color=:red, label="reflected decision region")
+
         display(fig)
+        savefig("./images/delays.png")
     else
         println("Too long to plot...")
     end
