@@ -215,7 +215,7 @@ function single_chan_stat((tags, k))
                      label = string("trasmitted channel"),
                      show=true,
                      xlabel = "Interarrival time (MTU)",
-                     ylabel = "Probability (log)",
+                     ylabel = "Frequency (log)",
                      size = (600, 400))
 
     Plots.plot!((0:bin_num-1)*bin_size,
