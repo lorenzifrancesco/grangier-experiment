@@ -2,8 +2,10 @@ module Analyzer
 using Plots
 using Printf
 import Plotly
+import PGFPlots
 import Statistics
 import ProgressMeter
+
 export delay_estimator, main, loader, difference_info, gated_counter, single_chan_stat
 
 Plots.gr()
@@ -230,7 +232,7 @@ function single_chan_stat((tags, k); chan = 3)
                          show=true,
                          xlabel = "absolute difference between gate events (clicks)",
                          size = (1200, 800))
-    savefig(fig, string("./images/", chan, "-single_chan.png"))
+    savefig(fig, string("./images/", chan, "-single_chan.pdf"))
 end
 
 function poisson_moments(mu)
@@ -319,7 +321,7 @@ function difference_info(diff1, diff2, k)
         Plots.plot!(rect, linewidth = 2, opacity = 0.1, color=:red, label="reflected decision region")
 
         display(fig)
-        savefig("./images/delays.png")
+        savefig("./images/delays.pdf")
     else
         println("Too long to plot...")
     end
