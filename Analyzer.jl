@@ -6,9 +6,8 @@ import PGFPlots
 import Statistics
 import ProgressMeter
 
-export delay_estimator, main, loader, difference_info, gated_counter, single_chan_stat
+export delay_estimator, loader, difference_info, gated_counter, single_chan_stat, config
 
-Plots.gr()
 default(show = true)
 # PyPlot.clf()
 # println(PyPlot.backend)
@@ -169,6 +168,7 @@ function delay_estimator((tags, k); mode = "gate_first")
     filter!(x-> (x< max_clicks), diff2)
 
     filter!(x -> (x>0), diff2)
+    # filter!(x -> (x>0), diff1)
 
     difference_info(diff1, diff2, k)
     μ1 = Statistics.mean(diff1)
@@ -179,60 +179,57 @@ function delay_estimator((tags, k); mode = "gate_first")
     return [μ1, σ1, μ2, σ2]
 end
 
-function single_chan_stat((tags, k); chan = 3)
+function single_chan_stat((tags, k))
     machine_time = 80.955e-12
-    series = tags[chan, :]
-    diff = Array{Int, 1}(undef, length(series)-1)
-    for i = 1:length(series)-1
-        diff[i] = series[i+1] - series[i]
-    end
-    filter!(z -> (z>0), diff)
-    max_diff = maximum(diff)
-    println("min: ", minimum(diff))
     bin_num = 1000
-
-    bin_step =Int(ceil(max_diff / bin_num))+1
-    println("max diff : ", max_diff, " bin step", bin_step)
-    hist = Array{Int, 1}(undef, bin_num)
+    hist = Array{Int, 2}(undef, 3, bin_num)
     fill!(hist, 0)
+    bin_step = Array{Int}(undef, 3)
+    diff = Array{Int, 2}(undef, 3, maximum(k)-1)
+    fill!(diff, 0)
+    println(length(tags[3, :]), k)
+    maxx = 0
+    for chan in [1, 2, 3]
+        series = tags[chan, :]
+        for i = 1:k[chan]-1
+            diff[chan, i] = series[i+1] - series[i]
+        end
+        filter!(z -> (z>0), diff[chan, :])
+        max_diff = maximum(diff[chan, :])
+        if max_diff>maxx
+            maxx = max_diff
+        end
+    end
+    x_axis = 0:bin_num:maxx
+    bin_size = maxx/bin_num
     i = 1
-    for i = 1:length(diff)
-        hist[Int(floor((diff[i]) / bin_step)) + 1] += 1
+    for chan = [1, 2, 3]
+        filter!(z -> (z>0), diff[chan, :])
+        for i = 1:k[chan]-2
+            hist[chan, Int(ceil(diff[chan, i]/bin_size))] += 1
+        end
     end
-    @printf("minimum difference between gate event: %10d clicks -> %5.2f ns \n",minimum(diff) , minimum(diff)*machine_time/1e-9
-    )
 
-    prob = hist / sum(hist)
-    accum = 0
-    i = 1
-    for i = 1:bin_num
-        accum += (i-1) * prob[i]
-    end
-    mu = accum
-    var = 0
-    sk_acc = 0
-    kr_acc = 0 
-    for i = 1:bin_num
-        var += (i-1 - mu)^2 * prob[i]
-        sk_acc += (i-1 - mu)^3 * prob[i]
-        kr_acc += (i-1 - mu)^4 * prob[i]
-    end
-    sigma = sqrt(var)
-    sk = sk_acc 
-    kr = kr_acc 
-    theo_mom = poisson_moments(mu)
-    @printf("Statistical analysis of gate events process:\n")
-    @printf("\t δ mean                : %5.3f \n", mu  - theo_mom[1])
-    @printf("\t δ variance            : %5.3f \n", var - theo_mom[2])
-    @printf("\t δ skewness non std    : %5.3f \n", sk  - theo_mom[3])
-    @printf("\t δ kurtosis non std    : %5.3f \n", kr  - theo_mom[4])
+    fig = Plots.plot((0:bin_num-1)*bin_size,
+                     [log10(x) for x in hist[1, :]] ,
+                     label = string("trasmitted channel"),
+                     show=true,
+                     xlabel = "Interarrival time (MTU)",
+                     ylabel = "Probability (log)",
+                     size = (600, 400))
 
-    fig = Plots.plot((1:bin_num)*bin_step,
-                         [log10(h) for h in hist],
-                         show=true,
-                         xlabel = "absolute difference between gate events (clicks)",
-                         size = (1200, 800))
-    savefig(fig, string("./images/", chan, "-single_chan.pdf"))
+    Plots.plot!((0:bin_num-1)*bin_size,
+                [log10(x) for x in hist[2, :]],
+                label = string("reflected channel"))
+
+    Plots.plot!((0:bin_num-1)*bin_size,
+                [log10(x) for x in hist[3, :]],
+                label = string("gate channel"))
+    @printf("Sum 1 : %5.4f \n", sum(hist[1, :]/sum(hist[1, :])))
+    @printf("Sum 2 : %5.4f \n", sum(hist[2, :]/sum(hist[2, :])))
+    @printf("Sum 3 : %5.4f \n", sum(hist[3, :]/sum(hist[3, :])))
+
+    savefig(string("./images/single_chan.pdf"))
 end
 
 function poisson_moments(mu)
@@ -307,18 +304,17 @@ function difference_info(diff1, diff2, k)
         fig = Plots.bar(x_delays1,
                          hist1,
                          show=true,
-                         title = string("Event delay and ±", n_σ, "σ decision region"),
-                         xlabel = "absolute difference from gate event (clicks)",
+                         xlabel = "absolute difference from gate event (MTU)",
                          ylabel = "Frequency", 
-                         label = "transmitted photon delay", 
+                         label = "Transmitted delay", 
                          size = (1000, 600))
-        Plots.bar!(x_delays2, hist2, label = "reflected photon delay")
+        Plots.bar!(x_delays2, hist2, label = "Reflected delay")
         rectangle(w, h, x, y) = Plots.Shape(x .+ [0,w,w,0], y .+ [0,0,h,h])
 
         recr = rectangle(2*n_σ*σ1, maximum([maximum(hist1), maximum(hist2)]), μ1-n_σ*σ1, 0)
         rect = rectangle(2*n_σ*σ2, maximum([maximum(hist1), maximum(hist2)]), μ2-n_σ*σ2, 0)
-        Plots.plot!(recr, linewidth = 2, opacity = 0.1, color=:blue, label="transmitted decision region")
-        Plots.plot!(rect, linewidth = 2, opacity = 0.1, color=:red, label="reflected decision region")
+        # Plots.plot!(recr, linewidth = 2, opacity = 0.1, color=:blue, label=nothing)
+        # Plots.plot!(rect, linewidth = 2, opacity = 0.1, color=:red, label=nothing)
 
         display(fig)
         savefig("./images/delays.pdf")
@@ -427,7 +423,8 @@ function gated_counter((tags, k), params; mode = "full-width")
     end
 end
 
-function main()
-    println("Nothing to do...")
+function config()
+    Plots.plotly()
+    Plots.default(guidefont=("times", 14), legendfont=("times", 12))
 end
 end

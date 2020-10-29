@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.10.8)  29 OCT 2020 13:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/Arch Linux) (preloaded format=pdflatex 2020.10.8)  29 OCT 2020 15:31
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -681,7 +681,14 @@ Package: fontenc 2020/02/11 v2.0o Standard LaTeX package
 File: ascii.sty 2006/05/30 v2.0 Package `ascii.sty'
  (/usr/share/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
-)) (/home/lorenzi/QOL/grangier-experiment/tex/report.aux)
+)) (/home/lorenzi/QOL/grangier-experiment/tex/report.aux
+
+LaTeX Warning: Label `our' multiply defined.
+
+
+LaTeX Warning: Label `sub@our' multiply defined.
+
+)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 77.
 LaTeX Font Info:    ... okay on input line 77.
 LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 77.
@@ -755,45 +762,56 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: float package is loaded.
 Package caption Info: End \AtBeginDocument code.
 \AtBeginShipoutBox=\box118
- ABD: EveryShipout initializing macros [1
-
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-<../images/our_setup.png, id=10, 759.83875pt x 449.68pt>
+ ABD: EveryShipout initializing macros
+<../images/our_setup.png, id=4, 759.83875pt x 449.68pt>
 File: ../images/our_setup.png Graphic file (type png)
 <use ../images/our_setup.png>
-Package pdftex.def Info: ../images/our_setup.png  used on input line 104.
+Package pdftex.def Info: ../images/our_setup.png  used on input line 113.
 (pdftex.def)             Requested size: 205.70406pt x 121.7377pt.
-<../images/original.png, id=12, 1007.26312pt x 406.51875pt>
+<../images/original.png, id=6, 1007.26312pt x 406.51875pt>
 File: ../images/original.png Graphic file (type png)
 <use ../images/original.png>
-Package pdftex.def Info: ../images/original.png  used on input line 111.
+Package pdftex.def Info: ../images/original.png  used on input line 120.
 (pdftex.def)             Requested size: 228.56161pt x 92.24434pt.
+ [1
 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} </home/lorenzi/QOL/grangier-experiment/tex/../images/our_setup.png> </home/lorenzi/QOL/grangier-experiment/tex/../images/original.png (PNG copy)>]
+<../images/before.pdf, id=32, 1003.75pt x 602.25pt>
+File: ../images/before.pdf Graphic file (type pdf)
+<use ../images/before.pdf>
+Package pdftex.def Info: ../images/before.pdf  used on input line 144.
+(pdftex.def)             Requested size: 455.37529pt x 273.22467pt.
+<../images/after.pdf, id=33, 1001.7425pt x 578.16pt>
+File: ../images/after.pdf Graphic file (type pdf)
+<use ../images/after.pdf>
+Package pdftex.def Info: ../images/after.pdf  used on input line 151.
+(pdftex.def)             Requested size: 455.37529pt x 262.82501pt.
+ [2 </home/lorenzi/QOL/grangier-experiment/tex/../images/before.pdf> </home/lorenzi/QOL/grangier-experiment/tex/../images/after.pdf>]
 No file report.bbl.
-
-Overfull \vbox (103.82529pt too high) has occurred while \output is active []
-
- [2 </home/lorenzi/QOL/grangier-experiment/tex/../images/our_setup.png> </home/lorenzi/QOL/grangier-experiment/tex/../images/original.png (PNG copy)>]
-LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 154.
- (/usr/share/texmf-dist/tex/latex/base/t1cmtt.fd
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 182.
+(/usr/share/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 155.
- [3] [4] [5] [6] [7] [8] [9] (/home/lorenzi/QOL/grangier-experiment/tex/report.aux) ) 
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 183.
+ [3] [4] [5] [6] [7] [8] [9] (/home/lorenzi/QOL/grangier-experiment/tex/report.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 20959 strings out of 480478
- 381754 string characters out of 5905959
- 2460296 words of memory out of 5000000
- 36572 multiletter control sequences out of 15000+600000
- 556338 words of font info for 81 fonts, out of 8000000 for 9000
+ 20978 strings out of 480478
+ 382182 string characters out of 5905959
+ 2460487 words of memory out of 5000000
+ 36588 multiletter control sequences out of 15000+600000
+ 556673 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  77i,10n,78p,872b,1298s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolA.enc}{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolC.enc}{/usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolD.enc}</usr/share/texmf-dist/fonts/type1/public/mnsymbol/MnSymbol10.pfb></usr/share/texmf-dist/fonts/type1/public/mnsymbol/MnSymbol7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx0800.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx0900.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
-Output written on /home/lorenzi/QOL/grangier-experiment/tex/report.pdf (9 pages, 387001 bytes).
+{/usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolA.enc}{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolC.enc}{/usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolE.enc}{/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}{/usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolD.enc}</usr/share/texmf-dist/fonts/type1/public/mnsymbol/MnSymbol10.pfb></usr/share/texmf-dist/fonts/type1/public/mnsymbol/MnSymbol7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx0800.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx0900.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfcc1728.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0700.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sfti1000.pfb></usr/share/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb>
+Output written on /home/lorenzi/QOL/grangier-experiment/tex/report.pdf (9 pages, 461471 bytes).
 PDF statistics:
- 117 PDF objects out of 1000 (max. 8388607)
- 85 compressed objects within 1 object stream
+ 131 PDF objects out of 1000 (max. 8388607)
+ 96 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 23 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 33 words of extra memory for PDF output out of 10000 (max. 10000000)
 

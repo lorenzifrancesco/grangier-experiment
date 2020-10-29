@@ -9,7 +9,7 @@
 \setlength{\columnsep}{1cm}
 \usepackage{graphicx}
 \graphicspath{{../results/}{../immagini/}}
-\DeclareGraphicsExtensions{.png}
+\DeclareGraphicsExtensions{.png, .pdf}
 \usepackage{wrapfig}
 \usepackage[font=small,labelfont=bf]{caption}
 \usepackage{setspace}
@@ -74,7 +74,7 @@ roundcorner=5pt}
 \title{\textsc{Report 2 - Grangier-Roger-Aspect experiment analysis}}
 \author{Francesco Lorenzi,      October 2020}
 \date{}
-\begin{document}z
+\begin{document}
 \maketitle
 \vspace{-25pt}
 
@@ -97,6 +97,15 @@ Even if the description of the experiment is straightfoward, an additional techn
 So a source which emits photon \emph{in couples} is used, one is sent to a separate detector, whereas the other is sent to the setup described before. In that way the first photon triggers a \emph{gate} signal that allow count from the other detector to be validated.
 
 Altought in the original experiment this feature was hardwired with electronics, in our setup all events are collected regardless, and the \emph{gate} signal is be applied separately in post-processing.
+
+In the setup in \ref{our} all the pulses from the detectors $PM_*$ are collected by a time-tagger on a common time scale in three different channels.
+
+The goal of the experiment is to verify that 
+\begin{equation}
+    \alpha = 
+\end{equation}
+is less than asdvaonvaoirnvao predicted by classical theory
+
 \begin{mdframed}
     \begin{figure}[H]
         \begin{subfigure}{\textwidth}
@@ -114,22 +123,41 @@ Altought in the original experiment this feature was hardwired with electronics,
         \caption{Experimental setup scheme}
     \end{figure}
 \end{mdframed}
-In the setup in \ref{our} all the pulses from the detectors $PM_*$ are collected by a time-tagger on a common time scale in three different channels.
-
-The goal of the experiment is to verify that 
-\begin{equation}
-    \alpha = 
-\end{equation}
-is less than asdvaonvaoirnvao predicted by classical theory
 
 \subsection*{Analysis}
 As anticipated, before counting double and triple coincidences, a preprocessing step is necessary. First of all, we reject events on the same channel which are distanced by less than $3900$ machine time units defined by $1 MTU = 80.955 ps$. In fact, events whose difference in time is less than $\approx 0.315 \mu s$ could be \emph{afterpulses}, artifacts of the detection electronics.
 
-In a second step, we must filter the data with a suitable \emph{gate} function, triggered by the events on 
+In a second step, we must filter the data with a suitable \emph{gate} function, which will be triggered by the events on the gate channel, and will count events which are included in a well deifined \emph{window} . The basic assumption are
+\begin{itemize}
+    \item Events from the same channel arrives at an arrival time delay normally distributed 
+\end{itemize} 
 
-In order to build a correct gate function, .
+In order to build a correct gate function, we must observe all the occurences of reflection and transmission, before and after the gate event. By analyzing the distributions of the counts, it will be possible to obtain a mean delay and a variance of the distribution. Using the normal distribution hypotesis, the \emph{gate} signal is tailored to be a \emph{window} in time of the form $[(t_{Gi} + \mu) -n\sigma, t_{Gi} + \mu) + n\sigma]$ where $t_{Gi}$ is the time of the $i$-th gate event, and $n$ is given arbitrarily.
 
-The difference between events caused by two photons belonging to the same pair, respectively on the gate detector and on one of the transmitted or reflected detectors, must be less that a given constant time. This can be said for physical reasons: (NEGLECTING RELATIVISTIC CONSIDERATIONS???) the pulses reach the time-tagger front end after the propagation of each photon along the optical bench, and the signal along the RG cable. The maximum time delay must be in the order of $\sim 10 ns$, so we filter only events around $\pm 100 MTU$ away from the nearest gate event.
+To facilitate further the recognition of delayed events, we filter the data of the transmitted and reflected channels to be less than $\pm 100 MTU$.
+In fact, the difference between events caused by two photons belonging to the same pair, respectively on the gate detector and on one of the transmitted or reflected detectors, must be less that a given constant time. This can be said for physical reasons: the pulses reach the time-tagger front end after the propagation of each photon along the optical bench, and the signal along the RG cable. The maximum time delay must be in the order of $\sim 10 ns$, so we filter only events around $\pm 100 MTU$ away from the nearest gate event.
+\end{multicols}
+\begin{mdframed}
+    \begin{figure}[H]
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics[width = 0.9\textwidth]{../images/before.pdf}
+            \caption{T, R events before trigger}
+            \label{our}
+        \end{subfigure}
+
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics[width = 0.9\textwidth]{../images/after.pdf}
+            \caption{T, R events after trigger}
+        \end{subfigure}
+        \caption{Analysis of inter-channel delay}
+    \end{figure}
+\end{mdframed}
+
+\begin{multicols}{2}
+    
+
 \subsection*{Interpretation of results}
 
 \section{Random Number Generation}
