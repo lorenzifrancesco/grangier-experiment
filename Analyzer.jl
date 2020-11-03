@@ -266,10 +266,10 @@ function gated_counter((tags, k), params; mode = "confidence")
     μ2 = params[3]
     σ2 = params[4]
 
-    @printf("mean reflected   : %6.4f \n", params[1])
-    @printf("stdd reflected   : %6.4f \n", params[2])
-    @printf("mean tramsmitted : %6.4f \n", params[3])
-    @printf("stdd tramsmitted : %6.4f \n", params[4])
+    @printf("mean tramsmitted   : %6.4f \n", params[1])
+    @printf("stdd tramsmitted   : %6.4f \n", params[2])
+    @printf("mean     reflected : %6.4f \n", params[3])
+    @printf("stdd     reflected : %6.4f \n", params[4])
     # N_1 = length(tags[3, :])
     N_1 = 0
     intervals = [2]
@@ -285,6 +285,7 @@ function gated_counter((tags, k), params; mode = "confidence")
         tran = 0
         multiple_tran = 0
         coincidences = 0
+        ## BE CAREFUL INVERTED DATA SET
         if (mode == "confidence") 
             for i=1:length(tags[3, :])-1
                 r_hit = false
@@ -324,7 +325,7 @@ function gated_counter((tags, k), params; mode = "confidence")
                 while tags[1, x] < tags[3, i]
                     x += 1
                 end
-                while tags[3, i] < tags[1, x] <= tags[3, i] + max_clicks
+                while tags[3, i] <= tags[1, x] < tags[3, i] + max_clicks
                     r_hit = true
                     x += 1
                 end
@@ -335,7 +336,7 @@ function gated_counter((tags, k), params; mode = "confidence")
                 while tags[2, y] < tags[3, i]
                     y += 1
                 end
-                while tags[3, i] < tags[2, y] <= tags[3, i] + max_clicks
+                while tags[3, i] <= tags[2, y] < tags[3, i] + max_clicks
                     t_hit = true
                     y += 1
                 end
@@ -368,7 +369,7 @@ function gated_counter((tags, k), params; mode = "confidence")
 end
 
 function config()
-    Plots.gr()
+    Plots.plotly()
     Plots.default(size=(600, 400), 
     guidefont=("times", 14), 
     legendfont=("times", 14),

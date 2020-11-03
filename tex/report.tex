@@ -4,7 +4,7 @@
 \usepackage{pythonhighlight}
 \usepackage{url}
 \usepackage{lipsum}
-\usepackage{amsmath}
+\usepackage{amsmath, amssymb}
 \usepackage{multicol}
 \setlength{\columnsep}{1cm}
 \usepackage{graphicx}
@@ -32,6 +32,7 @@
         {\ensuremath{\rcurvearrowse\space}}}
 \lstset{breaklines=true, breakatwhitespace=true}
 \lstset{numbers=left, numberstyle=\scriptsize}
+\DeclareMathOperator{\E}{\mathbb{E}}
 
 \UseRawInputEncoding %%%%%%%%%%%%%%%%%%%%%%%%%OCCHIOOOOOO
 \definecolor{forestgreen}{rgb}{0.0, 0.27, 0.13}
@@ -85,26 +86,21 @@ roundcorner=5pt}
 
 \begin{multicols}{2}
 \subsubsection*{Summary}
-The purpose of this report is to conduct a statistical analysis on a dataset collected from an experimental setup based on Grangier-Roger-Aspect experiment \cite{grangier}. 
+The purpose of this report is twofold: in a first part a statistical analysis will be carried out on a dataset collected from an experimental setup based on Grangier-Roger-Aspect experiment \cite{grangier}. 
 
-In a second part, an application of photon arrival statistics is also showed: using a dataset from coherent light photon detection random data is generated and used to approximate the base of the natural logarithm $e$.
+In a second part, an application of photon arrival statistics is also showed: using a dataset from coherent light photon detection, random integers are generated and analyzed using various visual techniques.
 
 \section{Photon indivisibility experiment}
-The experiment developed by Grangier, Roger and Aspect in 1986 consist in verify by statistical means on photomultipliers hits, that a single  photon, after impinging on a beam splitter, is present in only one of the beams after, and so it is indivisible. 
+The experiment developed by Grangier, Roger and Aspect in 1986 consist in verifying, by using statistical methods on photomultipliers hits, that a single  photon, after impinging on a beam splitter, is present in only one of the beams after, and so it is indivisible. 
 From the theoretical point of view, this experiment confirms the quanized nature of radiation, as the classical model for photodetection, which predicts correlation between detection along the two branches, is completely contradicted by the data.
 \subsection*{Experimental setup}
-Even if the description of the experiment is straightfoward, an additional technique is needed to prevent detector noise from making the data unintelligible.
-So a source which emits photon \emph{in couples} is used, one is sent to a separate detector, whereas the other is sent to the setup described before. In that way the first photon triggers a \emph{gate} signal that allow count from the other detector to be validated.
+Even if the description of the experiment with a single beam splitter and two detectors is straightfoward, an additional technique is needed to prevent detector noise from making the data unintelligible.
+So instead of a single source, a source which emits photon \emph{in couples} is used, one is sent to a separate detector, and the other is sent to the setup described before. In that way the first photon triggers a \emph{gate} signal that validate counts from the other detectors. Assuming a low rate emission from the source with respect to dark count rate of photodiodes, with that technique the noise is greatly reduced.
 
-Altought in the original experiment this feature was hardwired with electronics, in our setup all events are collected regardless, and the \emph{gate} signal is be applied separately in post-processing.
+Altought in the original experiment this feature was hardwired with electronics, in our setup all events are collected regardless of their validation, and the \emph{gate} signal is to be applied separately in post-processing.
 
-In the setup in \ref{our} all the pulses from the detectors $PM_*$ are collected by a time-tagger on a common time scale in three different channels.
+In the setup is shown in Figure \ref{our}: all the pulses from the photodiodes $PD_g, PD_t, PD_r$ are collected by a time-tagger on a common time scale in three different channels, respectively called \emph{gate (G)} channel, \emph{transmitted (T)} channel and \emph{reflected (R)} channel.
 
-The goal of the experiment is to verify that 
-\begin{equation}
-    \alpha = 
-\end{equation}
-is less than asdvaonvaoirnvao predicted by classical theory
 
 \begin{mdframed}
     \begin{figure}[H]
@@ -123,44 +119,117 @@ is less than asdvaonvaoirnvao predicted by classical theory
         \caption{Experimental setup scheme}
     \end{figure}
 \end{mdframed}
+In the experiment we will have that for every gate event which is associated with at least an event in the reflected or transmitted channel (and therefore could be considered not belonging to noise), there is a probability $p_r$ and $p_t$ to have an event in these channel. In fact, we can define two Bernoulli random variables $X_r \sim B(p_r)$ and $X_t \sim B(p_t)$ which represents the result of measurement associated with each gate event. In this sense all the data collected can be represented as a stochastic process of i.i.d. variables. For each measurement, we will call it \emph{double coincidence} if only one of the two realizations is $1$, and triple coincidence if they are both $1$. 
 
+The physical problem is addressed by observing the correlation between the random variables. 
+\begin{equation}
+    \alpha = \frac{p_c}{p_r p_t} = \frac{\E[X_r X_t]}{\E[X_r]\E[X_t]}
+\end{equation}
+If $\alpha > 0$ the variables are \emph{correlated}, and the classical model is confirmed, indeed if $\alpha < 0$ the variables are \emph{anticorrelated}, and the classical model is rejected in favour of the quantum model.
+Needless to say, we can only have an estimate of this parameter from experimental data: this is carried out as usual using sample mean estimators. If $N_1$ is the number of valid gate events,
+\begin{equation}
+    \widehat{\alpha} = \frac{\widehat{p_c}}{\widehat{p_r} \widehat{p_t}} = \frac{N_1 \sum_{i=1}^{N_1} X_r X_t}{\sum_{i=1}^{N_1} X_r\sum_{i=1}^{N_1} X_t}
+\end{equation}
 \subsection*{Analysis}
-As anticipated, before counting double and triple coincidences, a preprocessing step is necessary. First of all, we reject events on the same channel which are distanced by less than $3900$ machine time units defined by $1 MTU = 80.955 ps$. In fact, events whose difference in time is less than $\approx 0.315 \mu s$ could be \emph{afterpulses}, artifacts of the detection electronics.
+As anticipated, before counting double and triple coincidences, a preprocessing step is necessary. First of all, we reject events on the same channel which are distanced by less than $3900$ machine time units defined by $1 MTU = 80.955 ps$. In fact, events whose difference in time is less than $\approx 0.315 \mu s$ could be \emph{afterpulses}, artifacts of the detection electronics. After this passage the interarrival time of the three channels is plotted in Figure \ref{exps}, from which we can confirm that the light used is of coherent type.
+\begin{mdframed}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width = \textwidth]{../images/single_chan.pdf}
+        \caption{Single channel click frequencies}
+        \label{exps}
+    \end{figure}
+\end{mdframed}
 
-In a second step, we must filter the data with a suitable \emph{gate} function, which will be triggered by the events on the gate channel, and will count events which are included in a well deifined \emph{window} . The basic assumption are
-\begin{itemize}
-    \item Events from the same channel arrives at an arrival time delay normally distributed 
-\end{itemize} 
+In a second step, we must filter the data with a suitable \emph{gate} function, which will be triggered by the events on the gate channel, and will detect events from the other channels which are included in a well defined \emph{window}. 
 
-In order to build a correct gate function, we must observe all the occurences of reflection and transmission, before and after the gate event. By analyzing the distributions of the counts, it will be possible to obtain a mean delay and a variance of the distribution. Using the normal distribution hypotesis, the \emph{gate} signal is tailored to be a \emph{window} in time of the form $[(t_{Gi} + \mu) -n\sigma, t_{Gi} + \mu) + n\sigma]$ where $t_{Gi}$ is the time of the $i$-th gate event, and $n$ is given arbitrarily.
+In order to build a correct gate function, we notice that the free air path of photons in the three branches of the optical setup, as well as the difference in the coaxial cable length, can induce a differential time delay of events linked to the same photon pair. So we must observe all the occurences of reflection and transmission, before and after each gate event. By analyzing the distributions of the counts, it will be possible to obtain a mean and a variance of the delay of R and T channels.
 
-To facilitate further the recognition of delayed events, we filter the data of the transmitted and reflected channels to be less than $\pm 100 MTU$.
-In fact, the difference between events caused by two photons belonging to the same pair, respectively on the gate detector and on one of the transmitted or reflected detectors, must be less that a given constant time. This can be said for physical reasons: the pulses reach the time-tagger front end after the propagation of each photon along the optical bench, and the signal along the RG cable. The maximum time delay must be in the order of $\sim 10 ns$, so we filter only events around $\pm 100 MTU$ away from the nearest gate event.
-\end{multicols}
+To facilitate further the recognition of delayed events, we filter the data of the transmitted and reflected channels to be in a.
+In fact, if we have two photons belonging to the same pair, the differential delay of two arbitrary detections must be less that a given time. This can be said for \emph{physical reasons}: the pulses reach the time-tagger's front end after the propagation of each photon along the optical bench, and of the signal along the RG cable. Considering the order of magnitude of the lenghts in laboratory, we deduce that the maximum time delay must be in the order of $\sim 10 ns$, so we filter only events around $\pm 100 MTU$ away from the nearest gate event. The outcome of this filtering is shown in Figure \ref{before} for the interval $[-100, 0]$ (only noise) and in Figure \ref{after} for the interval $[0, +100]$ (bell-shaped delay curves).
 \begin{mdframed}
     \begin{figure}[H]
         \begin{subfigure}{\textwidth}
             \centering
-            \includegraphics[width = 0.9\textwidth]{../images/before.pdf}
+            \includegraphics[width = \textwidth]{../images/before.pdf}
             \caption{T, R events before trigger}
-            \label{our}
+            \label{before}
         \end{subfigure}
 
         \begin{subfigure}{\textwidth}
             \centering
-            \includegraphics[width = 0.9\textwidth]{../images/after.pdf}
+            \includegraphics[width = \textwidth]{../images/after.pdf}
             \caption{T, R events after trigger}
+            \label{after}
         \end{subfigure}
         \caption{Analysis of inter-channel delay}
     \end{figure}
 \end{mdframed}
-
-\begin{multicols}{2}
-    
+In the hypotesis that the delay follow a normal distribution, the \emph{gate} signal is tailored to be a \emph{window} in time of the form $[(t_{Gi} + \mu) -n\sigma; \; (t_{Gi} + \mu) + n\sigma]$ where $t_{Gi}$ is the time of the $i$-th gate event, and $n$ is choosen arbitrarily.
 
 \subsection*{Interpretation of results}
+By filtering the events with such gate function, we are able to measure the occurences of our random variables $X_r, \, X_t$. The result is shown in Table \ref{result}.
+\renewcommand{\arraystretch}{2}
+\begin{mdframed}
+    \begin{table}[H]
+        \begin{tabular}{|c|c|c|}
+            \hline
+            $\widehat{p_t} (\mathbf{x})$ & $\frac{13371}{27451} = 0.4871$ & \\
+            \hline
+            $\widehat{p_r} (\mathbf{x})$ & $\frac{14081}{27451} = 0.5130$ & \\
+            \hline
+            $\widehat{p_c} (\mathbf{x})$ & $\frac{1}{27451} = 3.6429 \cdot 10^{-5}$ & \\
+            \hline
+            $\widehat{\alpha} (\mathbf{x})$ & $1.458 \cdot 10^{-4}$ & \\
+            \hline
+        \end{tabular}
+        \label{result}
+    \end{table}
+\end{mdframed}
+
+
 
 \section{Random Number Generation}
+In this report two methods of obtaining random bits, i.e. 
+ processes of independent and identically distributed Bernoulli $(p = 0.5)$ random variables, are presented. They are different mainly in the possibility of their employment. The first one can operate on a continuous stream of photon arrivals, whereas the second needs to scan all the sequence of arrivals before generating the random bits. We will call the first one \emph{Local-difference} method, and the second \emph{Median}, for reasons that will be presented soon.
+\subsection*{Local-difference method}
+\begin{mdframed}
+    \begin{figure}[H]
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics[width = \textwidth]{../random_img/d2scatter3d.pdf}
+            \caption{}
+        \end{subfigure}
+
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics[width = \textwidth]{../random_img/d2histogram.pdf}
+            \caption{}
+        \end{subfigure}
+        \caption{Local-difference}
+    \end{figure}
+\end{mdframed}
+\subsection*{Median method}
+\begin{mdframed}
+    \begin{figure}[H]
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics[width = \textwidth]{../random_img/naif-scatter3d.pdf}
+            \caption{}
+        \end{subfigure}
+
+        \begin{subfigure}{\textwidth}
+            \centering
+            \includegraphics[width = \textwidth]{../random_img/naif-histogram.pdf}
+            \caption{}
+        \end{subfigure}
+        \caption{Local-difference}
+    \end{figure}
+\end{mdframed}
+\subsection*{A higher bit-rate alternative}
+If a complete statistical description of the Poisson arrival process is provided, a much higher bit-rate method is easily developed:
+We use the theorem of \emph{Universality of uniform r.v.} to obtain a continuous Uniform r.v. $\sim U([0, 1])$ from the Exponential. Once we have obtained that, we can divide the interval $[0, 1]$ in, for example, $256$ sections, and consider for each hit in that section, the corresponding $8$-bit number. The efficiency in this way can be scaled of a factor of $8$ or higher, keeping in mind that the time-tagger has not infinite resolution, and saves the events in a fundamentally discrete space of time tags.
+The obvious problem in this method is that the statistical description of the incoming process can only be estimated, so the random bits will be unreliable.
 
 
 \section*{Conclusions}
@@ -616,4 +685,121 @@ end
   \end{lstlisting}
 \end{mdframed}
 
+Random number section
+\begin{mdframed}
+    \begin{lstlisting}
+        function random(tags; mode="naif")
+        data = diff(tags[1])
+        data_diff = diff(data)
+        println("Generating with ", mode, " rule...")
+        μ =  Statistics.mean(data)
+        λ = 1/μ
+        median = Statistics.median(data)
+        σ = sqrt(Statistics.var(data))
+        byte_stream = Array{UInt8}(undef, Int(floor(length(data)/8))-1)
+        if mode == "naif"
+            stream = BitArray(undef, length(data))
+            for i = 1:length(data)
+                if data[i]<median
+                    stream[i] = 1
+                else
+                    stream[i] = 0
+                end
+            end
+            byte_stream = Array{UInt8}(undef, Int(floor(length(stream)/8)))
+            for i = 1:length(byte_stream)-1
+                byte_stream[i] = 1*stream[8*i]+2*stream[8*i+1]+4*stream[8*i+2]+8*stream[8*i+3]+
+                                 16*stream[8*i+4]+32*stream[8*i+5]+64*stream[8*i+6]+128*stream[8*i+7]
+            end
+        elseif mode == "high-rate"
+            uniform_events = Array{Float64}(undef, length(data)) 
+            for i = 1:length(data)
+                uniform_events[i] = exp(-data[i] * λ) - 1
+            end
+            # fig = Plots.histogram(uniform_events, bin= 10000)
+            # display(fig)
+            byte_stream = Array{UInt8}(undef, length(data))
+            for i = 1:length(byte_stream)
+                byte_stream[i] = -Int(floor(255 * uniform_events[i]))
+            end
+        elseif mode == "diff"
+            stream = BitArray(undef, length(data_diff))
+            for i =1:length(data_diff)-1
+                if data_diff[i]<data_diff[i+1]
+                    stream[i] = 1
+                else
+                    stream[i] = 0
+                end
+            end
+            byte_stream = Array{UInt8}(undef, Int(ceil(length(stream)/8)))
+            for i = 1:length(byte_stream)
+                byte_stream[i] = 1*stream[8*i]+2*stream[8*i+1]+4*stream[8*i+2]+8*stream[8*i+3]+
+                                 16*stream[8*i+4]+32*stream[8*i+5]+64*stream[8*i+6]+128*stream[8*i+7]
+            end
+        elseif mode == "diff-2"
+            stream = BitArray(undef, Int(ceil(length(data))/2))
+            fill!(stream, 0)
+            k = 1
+            for i =1:2:length(data_diff)-2
+                if data_diff[i]<data_diff[i+1]
+                    stream[k] = 1
+                else
+                    stream[k] = 0
+                end
+                k+=1
+            end
+            byte_stream = Array{UInt8}(undef, Int(ceil(length(stream)/8)))
+            fill!(byte_stream, 0)
+            for i = 1:length(byte_stream)-8
+                byte_stream[i] = 1*stream[8*i]+2*stream[8*i+1]+4*stream[8*i+2]+8*stream[8*i+3]+
+                                 16*stream[8*i+4]+32*stream[8*i+5]+64*stream[8*i+6]+128*stream[8*i+7]
+            end
+        end
+        println("Byte stream generated")
+        println("mean: ", Statistics.mean(byte_stream))
+    
+        rnd_tester(byte_stream)
+        return byte_stream
+    end
+    
+    function rnd_tester(byte_stream)
+        samples = length(byte_stream)-9
+        while samples % 3 != 0
+            samples -= 1
+        end
+        println("Analyzing ", samples, " UInt8 numbers...")
+        # 3D Scatter
+        fig1 = Plots.scatter3d(byte_stream[1:3:samples], byte_stream[2:3:samples], byte_stream[3:3:samples], 
+                               markercolor = :blue,
+                               markershape = :cross,
+                               markersize  = 0.5,
+                               opacity = 0.1,
+                               label= nothing,
+                               tickfont=("times", 12),
+                               size = (1024, 768)
+                               )  
+        # Plots.xaxis!(lims=(0, 255))
+        # Plots.yaxis!(lims=(0, 255))
+        # Plots.zaxis!(lims=(0, 255))
+        # Histogram
+        fig2 = Plots.histogram(byte_stream, bins = 256, label= nothing)
+        # Random walk
+        x = Array{Float64}(undef, samples)
+        fill!(x, 0)
+        μ = Statistics.mean(byte_stream)
+        println("Statistical mean of byte_stream: ", μ)
+        for i=2:samples
+            x[i] = x[i-1] + byte_stream[i] - μ
+        end
+        fig3 = Plots.plot(1:samples, x, label= nothing, size = (1024, 768))
+    
+        display(fig1)
+        savefig(fig1, "./random_img/scatter3d.pdf")
+        display(fig2)
+        savefig(fig2, "./random_img/histogram.pdf")
+        display(fig3)
+        savefig(fig3, "./random_img/random_walk.pdf")
+    end
+    \end{lstlisting}
+\end{mdframed} 
 \end{document}
