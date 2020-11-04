@@ -161,12 +161,12 @@ function delay_estimator((tags, k); mode = "gate_first")
     filter!(x-> (x< max_clicks), diff2)
     
     difference_info(diff1, diff2, k)
-    μ1 = Statistics.mean(diff1)
-    μ2 = Statistics.mean(diff2)
-    σ1 = sqrt(Statistics.var(diff1 .- μ1))
-    σ2 = sqrt(Statistics.var(diff2 .- μ2)) 
+    mu_1 = Statistics.mean(diff1)
+    mu_2 = Statistics.mean(diff2)
+    sigma_1 = sqrt(Statistics.var(diff1 .- mu_1))
+    sigma_2 = sqrt(Statistics.var(diff2 .- mu_2)) 
 
-    return [μ1, σ1, μ2, σ2]
+    return [mu_1, sigma_1, mu_2, sigma_2]
 end
 
 function difference_info(diff1, diff2, k)
@@ -217,15 +217,15 @@ function difference_info(diff1, diff2, k)
         hist2[Int(floor((diff2[i] - min_diff2) / mod))+1] += 1
         i += 1
     end
-    μ1 = Statistics.mean(diff1)
-    μ2 = Statistics.mean(diff2)
-    σ1 = sqrt(Statistics.var(diff1 .- μ1))
-    σ2 = sqrt(Statistics.var(diff2 .- μ2)) 
+    mu_1 = Statistics.mean(diff1)
+    mu_2 = Statistics.mean(diff2)
+    sigma_1 = sqrt(Statistics.var(diff1 .- mu_1))
+    sigma_2 = sqrt(Statistics.var(diff2 .- mu_2)) 
 
     if (length(hist1)<600 && length(hist2)<600)
         println("Plotting...")
         # fig = Plotly.figure()
-        n_σ = 2
+        n_sigma_ = 2
         fig = Plots.bar(x_delays1,
                          hist1,
                          show=true,
@@ -236,8 +236,8 @@ function difference_info(diff1, diff2, k)
         Plots.bar!(x_delays2, hist2, label = "R")
         rectangle(w, h, x, y) = Plots.Shape(x .+ [0,w,w,0], y .+ [0,0,h,h])
 
-        recr = rectangle(2*n_σ*σ1, maximum([maximum(hist1), maximum(hist2)]), μ1-n_σ*σ1, 0)
-        rect = rectangle(2*n_σ*σ2, maximum([maximum(hist1), maximum(hist2)]), μ2-n_σ*σ2, 0)
+        recr = rectangle(2*n_sigma_*sigma_1, maximum([maximum(hist1), maximum(hist2)]), mu_1-n_sigma_*sigma_1, 0)
+        rect = rectangle(2*n_sigma_*sigma_2, maximum([maximum(hist1), maximum(hist2)]), mu_2-n_sigma_*sigma_2, 0)
         # Plots.plot!(recr, linewidth = 2, opacity = 0.1, color=:blue, label=nothing)
         # Plots.plot!(rect, linewidth = 2, opacity = 0.1, color=:red, label=nothing)
 
@@ -250,10 +250,10 @@ end
 
 function gated_counter((tags, k), params; mode = "confidence")
     println("Gated counting...")
-    μ1 = params[1]
-    σ1 = params[2]
-    μ2 = params[3]
-    σ2 = params[4]
+    mu_1 = params[1]
+    sigma_1 = params[2]
+    mu_2 = params[3]
+    sigma_2 = params[4]
 
     @printf("mean tramsmitted   : %6.4f \n", params[1])
     @printf("stdd tramsmitted   : %6.4f \n", params[2])
@@ -261,7 +261,7 @@ function gated_counter((tags, k), params; mode = "confidence")
     @printf("stdd     reflected : %6.4f \n", params[4])
     N_1 = 0
     intervals = [2]
-    for n_σ in intervals
+    for n_sigma_ in intervals
         max_clicks = 100
         x = 1
         r_hit = false
@@ -276,10 +276,10 @@ function gated_counter((tags, k), params; mode = "confidence")
             for i=1:length(tags[3, :])-1
                 r_hit = false
                 t_hit = false  
-                while  tags[1, x] < -n_σ*σ1 + tags[3, i] + μ1
+                while  tags[1, x] < -n_sigma_*sigma_1 + tags[3, i] + mu_1
                     x += 1
                 end
-                while -n_σ*σ1 + tags[3, i] + μ1 <= tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1 && tags[1, x] < tags[3, i+1] 
+                while -n_sigma_*sigma_1 + tags[3, i] + mu_1 <= tags[1, x] < +n_sigma_*sigma_1 + tags[3, i] + mu_1 && tags[1, x] < tags[3, i+1] 
                     t_hit = true
                     x += 1
                 end
@@ -287,10 +287,10 @@ function gated_counter((tags, k), params; mode = "confidence")
                     tran += 1
                 end
 
-                while  tags[2, y] < -n_σ*σ2 + tags[3, i] + μ2 
+                while  tags[2, y] < -n_sigma_*sigma_2 + tags[3, i] + mu_2 
                     y += 1
                 end
-                while -n_σ*σ2 + tags[3, i] + μ2 <= tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2  && tags[2, y] < tags[3, i+1]
+                while -n_sigma_*sigma_2 + tags[3, i] + mu_2 <= tags[2, y] < +n_sigma_*sigma_2 + tags[3, i] + mu_2  && tags[2, y] < tags[3, i+1]
                     r_hit = true
                     y += 1
                 end
@@ -337,12 +337,12 @@ function gated_counter((tags, k), params; mode = "confidence")
                 end
             end
         end
-        @printf("Measurement with ± σ confidence \n")
-        println("sigma = ", n_σ)
+        @printf("Measurement with ± sigma_ confidence \n")
+        println("sigma = ", n_sigma_)
         prob_refl = refl / N_1
         prob_tran = tran / N_1
         prob_triple = coincidences / N_1
-        α = prob_triple/ (prob_refl * prob_tran)
+        alpha = prob_triple/ (prob_refl * prob_tran)
         @printf("\t gate         hits :  %9d \n", N_1)
         @printf("\t reflected    hits :  %9d \n", refl)
         @printf("\t transmitted  hits :  %9d \n", tran)
@@ -350,7 +350,7 @@ function gated_counter((tags, k), params; mode = "confidence")
         @printf(" ----------------------\n")
         @printf("\t P[double]         : %9.8f \n", prob_refl + prob_tran - 2 *prob_triple)
         @printf("\t P[triple]         : %9.8f \n", prob_triple)
-        @printf("\t Alpha             : %9.8f \n", α)
+        @printf("\t Alpha             : %9.8f \n", alpha)
 
         sigma_r = sqrt(prob_refl*(1-prob_refl)/(N_1-1))
         sigma_t = sqrt(prob_tran*(1-prob_tran)/(N_1-1))

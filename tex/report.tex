@@ -21,7 +21,6 @@
 \usepackage[tikz]{mdframed}
 \usepackage{colortbl}
 \usepackage{MnSymbol}
-\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{ascii}
 \usepackage{listings}
@@ -172,35 +171,39 @@ In general, if we have two photons belonging to the same pair, the differential 
 So we deduce that, in mean, the significant events in the channel R follows the gate event by $\approx 22 MTU$ , and the ones in the T channel follow the gate event by $\approx 54 MTU$.
 In conclusion, using the hypotesis that the differential delay follows approximatively  a normal distribution (which can be justified using the Central Limit Theorem), the standard deviations for each bell can be computed using the sample variance, and therefore the \emph{gate} signal is tailored to be a \emph{window} centered in the mean, and of width equal to a desired number of. That windows are shown in Figure \ref{after}, and are of the form $[(t_{Gi} + \mu) -2\sigma; \; (t_{Gi} + \mu) + 2\sigma]$ where $t_{Gi}$ is the time of the $i$-th gate event. Using the $\pm 2 \sigma$ interval, we expect to include in that way the $95\%$ of events. This construction of the gate window considers all the event belonging to the external of the windows as \emph{noise}.  
 
-\subsection*{Interpretation of results}
+\subsection*{Interpretation of results and conclusions}
 By filtering the events with the gate function described in the previous paragraph, we are able to measure the realization frequencies associated to the random variables $X_r, \, X_t$. The results are shown in Table \ref{result}, along with estimated errors.
-In order to compute the errors, for each probability estimate $\hat{p}$, in the hypotesis of a constant 
-\begin{equation}
-    \hat{\sigma}_{p} = \frac{\hat{p}(1-\hat{p})}{N_1+1}
-\end{equation}
-As for the error in $\alpha$, a  should involve its MSE, as the expected value of the error . However, a complete statistical description of this parameter is involved, so a basic error propagation extimate, using Taylor series, is carried out. 
+In order to compute the errors, the sample variance is used to deduce the standard deviation $\hat{\sigma}_{p}$. For a Bernoulli random variable of estimated probability $\hat{p}$ it is calculated as
+\begin{equation*}
+    \hat{\sigma}_{p} = \sqrt{\frac{\hat{p}(1-\hat{p})}{N_1-1}}
+\end{equation*}
+using the Bessel correction at the denominator.
+
+As for the error in $\hat{\alpha}$, a similar estimate is not readily applicable, as there is no trivial statistical description of this estimator. However, a basic error propagation extimate, using Taylor series, is carried out using the standard deviations of the probabilities. 
 \renewcommand{\arraystretch}{1.5}
 \begin{mdframed}
     \begin{table}[H]
         \centering
         \begin{tabular}{|c|c|c|}
             \hline
-            $\hat{p}_t (\mathbf{x})$ & $0.4871 \pm 0.003016$\\
+            $\hat{p}_t (\mathbf{x})$ & $0.5130 \pm 0.003017$\\
             \hline
-            $\hat{p}_r (\mathbf{x})$ & $0.5130 \pm 0.003016$\\
+            $\hat{p}_r (\mathbf{x})$ & $0.4871 \pm 0.003017$\\
             \hline
-            $\hat{p}_c (\mathbf{x})$ & $3.6429 \pm 3.6429 \cdot 10^{-5}$\\
+            $\hat{p}_c (\mathbf{x})$ & $(3.6429 \pm 3.6429) \cdot 10^{-5}$\\
             \hline
-            $\hat{\alpha} (\mathbf{x})$ & $1.458  \pm 1.4756 \cdot 10^{-4}$\\
+            $\hat{\alpha} (\mathbf{x})$ & $(1.458  \pm 1.476) \cdot 10^{-4}$\\
             \hline
         \end{tabular}
         \caption{Results}
         \label{result}
     \end{table}
 \end{mdframed}
-It may seem strange that the estimated errors on $\hat{p}_c$ and $\hat{\alpha}$ are so large to be equal to the actual magnitudes, but this is due to the poor statistics of the sample of triple coincidences: in fact, only 1 over 27451 gate events leads to a triple coincidence, and this greatly compromises the accuracy of the probability estimations. Nonetheless this great uncertainty \emph{does not invalidate the physical conclusions}: this value of $\alpha$ shows a near-perfect anticorrelation, and is complete contradiction whith respect to the classical theory. 
+It may seem a problem that the estimated errors on $\hat{p}_c$ and $\hat{\alpha}$ are so large to be comparable to the actual magnitudes, but this is due to the poor statistics of the sample of triple coincidences: in fact, only 1 over 27451 gate events leads to a triple coincidence, and this greatly compromises the accuracy of the probability estimations. 
 
-In addition, the result seems to be compatible to the far left part of the ones obtained by Grangier et. al.
+Nonetheless this great uncertainty \emph{does not invalidate the physical conclusions}: this value of $\alpha$ shows a near-perfect anticorrelation, and is in complete contradiction whith respect to the classical theory. 
+
+
 \begin{mdframed}
     \begin{figure}[H]
         \centering
@@ -209,6 +212,7 @@ In addition, the result seems to be compatible to the far left part of the ones 
         \label{alpha}
     \end{figure}
 \end{mdframed}
+In addition, the result on $\alpha$ and it's error seem to be compatible with the result obtained by Grangier et. al. shown in Figure \ref{alpha}. In the case of collected data, after the filtering, the average gate trigger rate is $\approx 1$, so it is extremely low with respect to the order of magnitude of the one of the original experiment.
 So the aim of the experiment is met: this experiment validate the indivisibility of the photons, and, in spite of the classical theory of EM fields, it shows a peculiar quantistic feature of reality. 
 
 \section{Random Number Generation}
@@ -224,7 +228,9 @@ This algorithm can operate with constant memory over a stream of subsequent time
     \item compare the values: if $\Delta_1 \geq \Delta_2$ set the bit to 1, otherwise set the bit to 0, 
     \item iterate 2. to 3. over all the other subsequent group of 8 time tags, and save the deduced bits.
 \end{enumerate}
-Using the vector of 4353849 time tags belonging to the Arecchi wheel experiment, we generate $4353849/4*8 = 136057$ bytes which represents numbers from 0 to 255. Using them as triplets of coordinates it is possible to build a 3D scatter plot to show their uniform distribution among space. In Figure \ref{local} this representation is shown as well as the histogram of frequencies of numbers.
+Using the vector of 4353849 time tags belonging to the Arecchi wheel experiment, we generate $\lfloor4353849/(4\cdot 8)\rfloor = 136057$ bytes which represents numbers from 0 to 255.
+
+Using them as triplets of coordinates it is possible to build a 3D scatter plot to show their uniform distribution among space. In Figure \ref{local} this representation is shown as well as the histogram of frequencies of numbers.
 \begin{mdframed}
     \begin{figure}[H]
         \begin{subfigure}{\textwidth}
@@ -250,7 +256,7 @@ This algorithm can operate with a double examination of the stream of the time t
     \item compute the sample median $\widetilde{d}$ of the differences vector (or alternatively, assuming an exponential distribution, compute the sample mean and obtain the median multiplying it by $ln(2)$),
     \item for each differences sample $d_i$, set a bit to 1 if $d_i \geq \widetilde{d}$, otherwise set it to 0.
 \end{enumerate}
-This algorithm provides a generation rate of 4 times the Local difference method, at the expense of a greater computing effort, as can be noticed by the plots in Figure \ref{median}.
+This algorithm provides a generation rate of 4 times the Local difference method, at the expense of a greater computing effort, as can be noticed by the plots in Figure \ref{median}, where there are $\lfloor 4353849/8\rfloor = 544231$ bytes.
 \begin{mdframed}
     \begin{figure}[H]
         \begin{subfigure}{\textwidth}
@@ -278,21 +284,22 @@ The obvious problem in this method is that the statistical description of the in
 
 \bibliography{References}
 \begin{thebibliography}{99}
-  \bibitem{grangier} Grangier, Roger, Aspect
-  \bibitem{hc} Hogg Craig, Introduction to mathematical statistics
+  \bibitem{grangier} P.Grangier, G.Roger, A.Aspect - \emph{Experimental evidence for a photon anticorrelation effects on a beam splitter: a new light on single-photon interferences} (Europhys. Lett., 1 (4), pp. 173-179, 1986)
+  \bibitem{hc} R.V.Hogg, J.W.McKean, A.T.Craig, \emph{Introduction to mathematical statistics} (Pearson, 2019)
 \end{thebibliography}
 \end{multicols}
 
 
 
 
-\hrulefill
 \subsection*{Code}
+The code is written in Julia Programming Language.
 
+1. Analysis of photon indivisibility experiment
 \renewcommand{\baselinestretch}{0.5}
 \begin{mdframed}
-  \begin{lstlisting}
-    module Analyzer
+    \begin{lstlisting}
+module Analyzer
 using Plots
 using Printf
 import Plotly
@@ -300,12 +307,9 @@ import PGFPlots
 import Statistics
 import ProgressMeter
 
-export delay_estimator, main, loader, difference_info, gated_counter, single_chan_stat
+export delay_estimator, loader, difference_info, gated_counter, single_chan_stat, config
 
-Plots.gr()
 default(show = true)
-# PyPlot.clf()
-# println(PyPlot.backend)
 const machine_time = 80.955e-12
 
 function loader(;aft_filter = true)
@@ -341,7 +345,6 @@ function loader(;aft_filter = true)
             tags[ b[2, i]-1, k[b[2, i]-1] ] = b[1, i]
             k[b[2, i] - 1] += 1
         else
-            # println("Afterpulse on CH-", b[2, i] - 1)
             aft[b[2, i] - 1] +=1
         end
     end
@@ -370,7 +373,7 @@ function delay_estimator((tags, k); mode = "gate_first")
     fill!(diff1, 0)
     fill!(diff2, 0)
     if mode == "gate_last"
-        g1 = -1         # BE CAREFUL : NOT A REAL GATE EVENT
+        g1 = -1
         g2 = tags[3, 1]
         n = 1
         # Retarded gate method - positive diff
@@ -382,7 +385,7 @@ function delay_estimator((tags, k); mode = "gate_first")
             g2 = tags[3, i]
         end
 
-        g1 = -1         # BE CAREFUL : NOT A REAL GATE EVENT
+        g1 = -1
         g2 = tags[3, 1]
         n = 1
         for i = 2:k[3]
@@ -394,7 +397,7 @@ function delay_estimator((tags, k); mode = "gate_first")
         end
     elseif mode == "gate_first"
         # Anticipated gate method - positive diff
-        g1 = -1         # BE CAREFUL : NOT A REAL GATE EVENT
+        g1 = -1
         g2 = tags[3, 1]
         n = 8
         for i = 2:k[3]
@@ -407,7 +410,7 @@ function delay_estimator((tags, k); mode = "gate_first")
         end
         diff1 = diff1[8:length(diff1)]
 
-        g1 = -1         # BE CAREFUL : NOT A REAL GATE EVENT
+        g1 = -1
         g2 = tags[3, 1]
         n = 8
         for i = 2:k[3]
@@ -421,7 +424,7 @@ function delay_estimator((tags, k); mode = "gate_first")
         diff2 = diff2[8:length(diff2)]
     else
         # Minimum distance method
-        g1 = -100000000         # BE CAREFUL : NOT A REAL GATE EVENT
+        g1 = -100000000
         g2 = tags[3, 1]
         n = 1
         for i = 2:k[3]
@@ -436,7 +439,7 @@ function delay_estimator((tags, k); mode = "gate_first")
             g1 = g2
             g2 = tags[3, i]
         end
-        g1 = -100000000         # BE CAREFUL : NOT A REAL GATE EVENT
+        g1 = -100000000
         g2 = tags[3, 1]
         n = 1
         for i = 2:k[3]
@@ -452,93 +455,19 @@ function delay_estimator((tags, k); mode = "gate_first")
             g2 = tags[3, i]
         end
     end
-
-    # max_delay = 7.5 # [ns]
-    # max_clicks = max_delay * 1e-9/machine_time
-    max_clicks = 80
+    max_clicks = 100
     max_delay = max_clicks * machine_time / 1e-9
     @printf("PRE-filtering at max delay = %d ns \n ", max_delay)
-    # unreal difference filter
     filter!(x-> (x< max_clicks), diff1)
     filter!(x-> (x< max_clicks), diff2)
-
-    filter!(x -> (x>0), diff2)
-
+    
     difference_info(diff1, diff2, k)
-    μ1 = Statistics.mean(diff1)
-    μ2 = Statistics.mean(diff2)
-    σ1 = sqrt(Statistics.var(diff1 .- μ1))
-    σ2 = sqrt(Statistics.var(diff2 .- μ2)) 
+    mu_1 = Statistics.mean(diff1)
+    mu_2 = Statistics.mean(diff2)
+    sigma_1 = sqrt(Statistics.var(diff1 .- mu_1))
+    sigma_2 = sqrt(Statistics.var(diff2 .- mu_2)) 
 
-    return [μ1, σ1, μ2, σ2]
-end
-
-function single_chan_stat((tags, k); chan = 3)
-    machine_time = 80.955e-12
-    series = tags[chan, :]
-    diff = Array{Int, 1}(undef, length(series)-1)
-    for i = 1:length(series)-1
-        diff[i] = series[i+1] - series[i]
-    end
-    filter!(z -> (z>0), diff)
-    max_diff = maximum(diff)
-    println("min: ", minimum(diff))
-    bin_num = 1000
-
-    bin_step =Int(ceil(max_diff / bin_num))+1
-    println("max diff : ", max_diff, " bin step", bin_step)
-    hist = Array{Int, 1}(undef, bin_num)
-    fill!(hist, 0)
-    i = 1
-    for i = 1:length(diff)
-        hist[Int(floor((diff[i]) / bin_step)) + 1] += 1
-    end
-    @printf("minimum difference between gate event: %10d clicks -> %5.2f ns \n",minimum(diff) , minimum(diff)*machine_time/1e-9
-    )
-
-    prob = hist / sum(hist)
-    accum = 0
-    i = 1
-    for i = 1:bin_num
-        accum += (i-1) * prob[i]
-    end
-    mu = accum
-    var = 0
-    sk_acc = 0
-    kr_acc = 0 
-    for i = 1:bin_num
-        var += (i-1 - mu)^2 * prob[i]
-        sk_acc += (i-1 - mu)^3 * prob[i]
-        kr_acc += (i-1 - mu)^4 * prob[i]
-    end
-    sigma = sqrt(var)
-    sk = sk_acc 
-    kr = kr_acc 
-    theo_mom = poisson_moments(mu)
-    @printf("Statistical analysis of gate events process:\n")
-    @printf("\t δ mean                : %5.3f \n", mu  - theo_mom[1])
-    @printf("\t δ variance            : %5.3f \n", var - theo_mom[2])
-    @printf("\t δ skewness non std    : %5.3f \n", sk  - theo_mom[3])
-    @printf("\t δ kurtosis non std    : %5.3f \n", kr  - theo_mom[4])
-
-    fig = Plots.plot((1:bin_num)*bin_step,
-                         [log10(h) for h in hist],
-                         show=true,
-                         xlabel = "absolute difference between gate events (clicks)",
-                         size = (1200, 800))
-    savefig(fig, string("./images/", chan, "-single_chan.pdf"))
-end
-
-function poisson_moments(mu)
-    return [mu, mu, 1/sqrt(mu), 1/mu]
-end
-
-function bose_ein_moments(mu)
-    sigma = sqrt(mu + mu^2)
-    return [mu,
-            sigma^2,
-            (mu + 3*mu^2 + 2*mu^3)/sigma^3,
-            (mu + 10*mu^2 + 18*mu^3 + 9*mu^4)/sigma^4]
+    return [mu_1, sigma_1, mu_2, sigma_2]
 end
 
 function difference_info(diff1, diff2, k)
@@ -561,8 +490,7 @@ function difference_info(diff1, diff2, k)
     @printf("1) Fraction of accepted hits : %d / %d = %4.2f \n", length(diff1), k[1], length(diff1)/k[1])
     @printf("2) Fraction of accepted hits : %d / %d = %4.2f\n", length(diff2), k[2], length(diff2)/k[2])
 
-    # Want to show exactly 100 bins in histogram
-    mod = Int(ceil(maximum([length(diff1), length(diff2)]) / 1e4)) # TO BE MODIFIED
+    mod = Int(ceil(maximum([length(diff1), length(diff2)]) / 1e4))
 
     # plot clicks 
     x_delays1 = (min_diff1:mod:max_diff1)
@@ -589,30 +517,29 @@ function difference_info(diff1, diff2, k)
         hist2[Int(floor((diff2[i] - min_diff2) / mod))+1] += 1
         i += 1
     end
-    μ1 = Statistics.mean(diff1)
-    μ2 = Statistics.mean(diff2)
-    σ1 = sqrt(Statistics.var(diff1 .- μ1))
-    σ2 = sqrt(Statistics.var(diff2 .- μ2)) 
+    mu_1 = Statistics.mean(diff1)
+    mu_2 = Statistics.mean(diff2)
+    sigma_1 = sqrt(Statistics.var(diff1 .- mu_1))
+    sigma_2 = sqrt(Statistics.var(diff2 .- mu_2)) 
 
     if (length(hist1)<600 && length(hist2)<600)
         println("Plotting...")
         # fig = Plotly.figure()
-        n_σ = 2
+        n_sigma_ = 2
         fig = Plots.bar(x_delays1,
                          hist1,
                          show=true,
-                         title = string("Event delay and ±", n_σ, "σ decision region"),
-                         xlabel = "absolute difference from gate event (clicks)",
-                         ylabel = "Frequency", 
-                         label = "transmitted photon delay", 
-                         size = (1000, 600))
-        Plots.bar!(x_delays2, hist2, label = "reflected photon delay")
+                         xlabel = "absolute difference from gate event (MTU)",
+                         ylabel = "frequency", 
+                         label = "T", 
+                         size = (600, 400))
+        Plots.bar!(x_delays2, hist2, label = "R")
         rectangle(w, h, x, y) = Plots.Shape(x .+ [0,w,w,0], y .+ [0,0,h,h])
 
-        recr = rectangle(2*n_σ*σ1, maximum([maximum(hist1), maximum(hist2)]), μ1-n_σ*σ1, 0)
-        rect = rectangle(2*n_σ*σ2, maximum([maximum(hist1), maximum(hist2)]), μ2-n_σ*σ2, 0)
-        Plots.plot!(recr, linewidth = 2, opacity = 0.1, color=:blue, label="transmitted decision region")
-        Plots.plot!(rect, linewidth = 2, opacity = 0.1, color=:red, label="reflected decision region")
+        recr = rectangle(2*n_sigma_*sigma_1, maximum([maximum(hist1), maximum(hist2)]), mu_1-n_sigma_*sigma_1, 0)
+        rect = rectangle(2*n_sigma_*sigma_2, maximum([maximum(hist1), maximum(hist2)]), mu_2-n_sigma_*sigma_2, 0)
+        # Plots.plot!(recr, linewidth = 2, opacity = 0.1, color=:blue, label=nothing)
+        # Plots.plot!(rect, linewidth = 2, opacity = 0.1, color=:red, label=nothing)
 
         display(fig)
         savefig("./images/delays.pdf")
@@ -621,22 +548,21 @@ function difference_info(diff1, diff2, k)
     end
 end
 
-# need to decide what method to use -> we use  GATE -> REFLECTED -> TRANSMITTED
-function gated_counter((tags, k), params; mode = "full-width")
+function gated_counter((tags, k), params; mode = "confidence")
     println("Gated counting...")
-    μ1 = params[1]
-    σ1 = params[2]
-    μ2 = params[3]
-    σ2 = params[4]
+    mu_1 = params[1]
+    sigma_1 = params[2]
+    mu_2 = params[3]
+    sigma_2 = params[4]
 
-    @printf("mean reflected   : %6.4f \n", params[1])
-    @printf("stdd reflected   : %6.4f \n", params[2])
-    @printf("mean tramsmitted : %6.4f \n", params[3])
-    @printf("stdd tramsmitted : %6.4f \n", params[4])
-    N_1 = length(tags[3, :])
-    intervals = [6]
-    # Gate function (not counting with multiple hits)
-    for n_σ in intervals
+    @printf("mean tramsmitted   : %6.4f \n", params[1])
+    @printf("stdd tramsmitted   : %6.4f \n", params[2])
+    @printf("mean     reflected : %6.4f \n", params[3])
+    @printf("stdd     reflected : %6.4f \n", params[4])
+    N_1 = 0
+    intervals = [2]
+    for n_sigma_ in intervals
+        max_clicks = 100
         x = 1
         r_hit = false
         refl = 0
@@ -650,29 +576,32 @@ function gated_counter((tags, k), params; mode = "full-width")
             for i=1:length(tags[3, :])-1
                 r_hit = false
                 t_hit = false  
-                while  tags[1, x] < -n_σ*σ1 + tags[3, i] + μ1
+                while  tags[1, x] < -n_sigma_*sigma_1 + tags[3, i] + mu_1
                     x += 1
                 end
-                while -n_σ*σ1 + tags[3, i] + μ1 <= tags[1, x] < +n_σ*σ1 + tags[3, i] + μ1 && tags[1, x] < tags[3, i+1] 
-                    r_hit = true
-                    x += 1
-                end
-                if r_hit
-                    refl += 1
-                end
-
-                while  tags[2, y] < -n_σ*σ2 + tags[3, i] + μ2 
-                    y += 1
-                end
-                while -n_σ*σ2 + tags[3, i] + μ2 <= tags[2, y] < +n_σ*σ2 + tags[3, i] + μ2  && tags[2, y] < tags[3, i+1]
+                while -n_sigma_*sigma_1 + tags[3, i] + mu_1 <= tags[1, x] < +n_sigma_*sigma_1 + tags[3, i] + mu_1 && tags[1, x] < tags[3, i+1] 
                     t_hit = true
-                    y += 1
+                    x += 1
                 end
                 if t_hit
                     tran += 1
                 end
+
+                while  tags[2, y] < -n_sigma_*sigma_2 + tags[3, i] + mu_2 
+                    y += 1
+                end
+                while -n_sigma_*sigma_2 + tags[3, i] + mu_2 <= tags[2, y] < +n_sigma_*sigma_2 + tags[3, i] + mu_2  && tags[2, y] < tags[3, i+1]
+                    r_hit = true
+                    y += 1
+                end
+                if r_hit
+                    refl += 1
+                end
                 if r_hit && t_hit
                     coincidences += 1
+                end
+                if r_hit || t_hit
+                    N_1 += 1
                 end
             end
         else
@@ -682,167 +611,240 @@ function gated_counter((tags, k), params; mode = "full-width")
                 while tags[1, x] < tags[3, i]
                     x += 1
                 end
-                while tags[3, i] < tags[1, x] <= tags[3, i+1] 
-                    r_hit = true
+                while tags[3, i] <= tags[1, x] < tags[3, i] + max_clicks
+                    t_hit = true
                     x += 1
                 end
-                if r_hit
-                    refl += 1
+                if t_hit
+                    tran += 1
                 end
 
                 while tags[2, y] < tags[3, i]
                     y += 1
                 end
-                while tags[3, i] < tags[2, y] <= tags[3, i+1]
-                    t_hit = true
+                while tags[3, i] <= tags[2, y] < tags[3, i] + max_clicks
+                    r_hit = true
                     y += 1
                 end
-                if t_hit
-                    tran += 1
+                if r_hit
+                    refl += 1
                 end
                 if r_hit && t_hit
                     coincidences += 1
                 end
+                if r_hit || t_hit
+                    N_1 += 1
+                end
             end
         end
-        @printf("Measurement with ciao confidence \n")
+        @printf("Measurement with ± sigma_ confidence \n")
+        println("sigma = ", n_sigma_)
         prob_refl = refl / N_1
         prob_tran = tran / N_1
         prob_triple = coincidences / N_1
-        α = prob_triple/ (prob_refl * prob_tran)
+        alpha = prob_triple/ (prob_refl * prob_tran)
         @printf("\t gate         hits :  %9d \n", N_1)
         @printf("\t reflected    hits :  %9d \n", refl)
         @printf("\t transmitted  hits :  %9d \n", tran)
         @printf("\t coincidences hits :  %9d \n", coincidences)
         @printf(" ----------------------\n")
-        @printf("\t P[double]         : %9.8f \n", prob_refl + prob_tran)
+        @printf("\t P[double]         : %9.8f \n", prob_refl + prob_tran - 2 *prob_triple)
         @printf("\t P[triple]         : %9.8f \n", prob_triple)
-        @printf("\t Alpha             : %9.8f \n", α)
+        @printf("\t Alpha             : %9.8f \n", alpha)
+
+        sigma_r = sqrt(prob_refl*(1-prob_refl)/(N_1-1))
+        sigma_t = sqrt(prob_tran*(1-prob_tran)/(N_1-1))
+        sigma_c = sqrt(prob_triple*(1-prob_triple)/(N_1-1))
+        @printf("p_r variance: %9.8f \n", sigma_r)
+        @printf("p_t variance: %9.8f \n", sigma_t)
+        @printf("p_c variance: %9.8f \n", sigma_c)
+        @printf(" variance: %9.8f \n", sigma_c/(prob_refl*prob_tran) + 
+                sigma_r * prob_triple/(prob_refl^2*prob_tran) +
+                sigma_t * prob_triple/(prob_refl*prob_tran^2))
     end
 end
 
-function main()
-    println("Nothing to do...")
+function config()
+    Plots.plotly()
+    Plots.default(size=(600, 400), 
+    guidefont=("times", 14), 
+    legendfont=("times", 14),
+    tickfont=("times", 14)
+    )
 end
+
+function single_chan_stat((tags, k))
+    machine_time = 80.955e-12
+    bin_num = 1000
+    hist = Array{Int, 2}(undef, 3, bin_num)
+    fill!(hist, 0)
+    bin_step = Array{Int}(undef, 3)
+    diff = Array{Int, 2}(undef, 3, maximum(k)-1)
+    fill!(diff, 0)
+    println(length(tags[3, :]), k)
+    maxx = 0
+    for chan in [1, 2, 3]
+        series = tags[chan, :]
+        for i = 1:k[chan]-1
+            diff[chan, i] = series[i+1] - series[i]
+        end
+        filter!(z -> (z>0), diff[chan, :])
+        max_diff = maximum(diff[chan, :])
+        if max_diff>maxx
+            maxx = max_diff
+        end
+    end
+    x_axis = 0:bin_num:maxx
+    bin_size = maxx/bin_num
+    i = 1
+    for chan = [1, 2, 3]
+        filter!(z -> (z>0), diff[chan, :])
+        for i = 1:k[chan]-2
+            hist[chan, Int(ceil(diff[chan, i]/bin_size))] += 1
+        end
+    end
+
+    fig = Plots.plot((0:bin_num-1)*bin_size,
+                     [log10(x) for x in hist[1, :]] ,
+                     label = string("trasmitted channel"),
+                     show=true,
+                     xlabel = "Interarrival time (MTU)",
+                     ylabel = "Frequency (log)",
+                     size = (600, 400))
+
+    Plots.plot!((0:bin_num-1)*bin_size,
+                [log10(x) for x in hist[2, :]],
+                label = string("reflected channel"))
+
+    Plots.plot!((0:bin_num-1)*bin_size,
+                [log10(x) for x in hist[3, :]],
+                label = string("gate channel"))
+    @printf("Sum 1 : %5.4f \n", sum(hist[1, :]/sum(hist[1, :])))
+    @printf("Sum 2 : %5.4f \n", sum(hist[2, :]/sum(hist[2, :])))
+    @printf("Sum 3 : %5.4f \n", sum(hist[3, :]/sum(hist[3, :])))
+
+    savefig(string("./images/single_chan.pdf"))
 end
-  \end{lstlisting}
+
+end
+    \end{lstlisting}
 \end{mdframed}
 
-Random number section
+2. Functions involved in generation and analysis of random data
 \begin{mdframed}
     \begin{lstlisting}
-        function random(tags; mode="naif")
-        data = diff(tags[1])
-        data_diff = diff(data)
-        println("Generating with ", mode, " rule...")
-        μ =  Statistics.mean(data)
-        λ = 1/μ
-        median = Statistics.median(data)
-        σ = sqrt(Statistics.var(data))
-        byte_stream = Array{UInt8}(undef, Int(floor(length(data)/8))-1)
-        if mode == "naif"
-            stream = BitArray(undef, length(data))
-            for i = 1:length(data)
-                if data[i]<median
-                    stream[i] = 1
-                else
-                    stream[i] = 0
-                end
-            end
-            byte_stream = Array{UInt8}(undef, Int(floor(length(stream)/8)))
-            for i = 1:length(byte_stream)-1
-                byte_stream[i] = 1*stream[8*i]+2*stream[8*i+1]+4*stream[8*i+2]+8*stream[8*i+3]+
-                                 16*stream[8*i+4]+32*stream[8*i+5]+64*stream[8*i+6]+128*stream[8*i+7]
-            end
-        elseif mode == "high-rate"
-            uniform_events = Array{Float64}(undef, length(data)) 
-            for i = 1:length(data)
-                uniform_events[i] = exp(-data[i] * λ) - 1
-            end
-            # fig = Plots.histogram(uniform_events, bin= 10000)
-            # display(fig)
-            byte_stream = Array{UInt8}(undef, length(data))
-            for i = 1:length(byte_stream)
-                byte_stream[i] = -Int(floor(255 * uniform_events[i]))
-            end
-        elseif mode == "diff"
-            stream = BitArray(undef, length(data_diff))
-            for i =1:length(data_diff)-1
-                if data_diff[i]<data_diff[i+1]
-                    stream[i] = 1
-                else
-                    stream[i] = 0
-                end
-            end
-            byte_stream = Array{UInt8}(undef, Int(ceil(length(stream)/8)))
-            for i = 1:length(byte_stream)
-                byte_stream[i] = 1*stream[8*i]+2*stream[8*i+1]+4*stream[8*i+2]+8*stream[8*i+3]+
-                                 16*stream[8*i+4]+32*stream[8*i+5]+64*stream[8*i+6]+128*stream[8*i+7]
-            end
-        elseif mode == "diff-2"
-            stream = BitArray(undef, Int(ceil(length(data))/2))
-            fill!(stream, 0)
-            k = 1
-            for i =1:2:length(data_diff)-2
-                if data_diff[i]<data_diff[i+1]
-                    stream[k] = 1
-                else
-                    stream[k] = 0
-                end
-                k+=1
-            end
-            byte_stream = Array{UInt8}(undef, Int(ceil(length(stream)/8)))
-            fill!(byte_stream, 0)
-            for i = 1:length(byte_stream)-8
-                byte_stream[i] = 1*stream[8*i]+2*stream[8*i+1]+4*stream[8*i+2]+8*stream[8*i+3]+
-                                 16*stream[8*i+4]+32*stream[8*i+5]+64*stream[8*i+6]+128*stream[8*i+7]
+    function random(tags; mode="naif")
+    data = diff(tags[1])
+    data_diff = diff(data)[1:2:length(data)]
+    println("Generating with ", mode, " rule, over ", length(tags[1]) , " tags stream...")
+    println("Diffs length: ", length(data), " \nDiffs_of_diffs length: ", length(data_diff))
+    mu =  Statistics.mean(data)
+    lambda = 1/mu
+    median = Statistics.median(data)
+    sigma = sqrt(Statistics.var(data))
+    byte_stream = Array{UInt8}(undef, Int(floor(length(data)/8))-1)
+    if mode == "naif"
+        stream = BitArray(undef, length(data))
+        for i = 1:length(data)
+            if data[i]<median
+                stream[i] = 1
+            else
+                stream[i] = 0
             end
         end
-        println("Byte stream generated")
-        println("mean: ", Statistics.mean(byte_stream))
-    
-        rnd_tester(byte_stream)
-        return byte_stream
+        byte_stream = Array{UInt8}(undef, Int(floor(length(stream)/8)))
+        for i = 1:length(byte_stream)-1
+            byte_stream[i] = 
+            1*stream[8*i]+2*stream[8*i+1]+4*stream[8*i+2]+8*stream[8*i+3]+
+            16*stream[8*i+4]+32*stream[8*i+5]+64*s[8*i+6]+128*stream[8*i+7]
+        end
+    elseif mode == "high-rate"
+        uniform_events = Array{Float64}(undef, length(data)) 
+        for i = 1:length(data)
+            uniform_events[i] = exp(-data[i] * lambda) - 1
+        end
+
+        byte_stream = Array{UInt8}(undef, length(data))
+        for i = 1:length(byte_stream)
+            byte_stream[i] = -Int(floor(255 * uniform_events[i]))
+        end
+    elseif mode == "diff"
+        stream = BitArray(undef, length(data_diff))
+        for i =1:length(data_diff)-1
+            if data_diff[i]<data_diff[i+1]
+                stream[i] = 1
+            else
+                stream[i] = 0
+            end
+        end
+        byte_stream = Array{UInt8}(undef, Int(ceil(length(stream)/8)))
+        for i = 1:length(byte_stream)-1
+            byte_stream[i] = 
+            1*stream[8*i]+2*stream[8*i+1]+4*stream[8*i+2]+8*stream[8*i+3]+
+            16*stream[8*i+4]+32*stream[8*i+5]+64*s[8*i+6]+128*stream[8*i+7]
+        end
+    elseif mode == "diff-2"
+        stream = BitArray(undef, Int(ceil(length(data_diff))/2))
+        fill!(stream, 0)
+        k = 1
+        for i =1:2:length(data_diff)-2
+            if data_diff[i]<data_diff[i+1]
+                stream[k] = 1
+            else
+                stream[k] = 0
+            end
+            k+=1
+        end
+        byte_stream = Array{UInt8}(undef, Int(ceil(length(stream)/8)))
+        fill!(byte_stream, 0)
+        for i = 1:length(byte_stream)-1
+            byte_stream[i] = 
+            1*stream[8*i]+2*stream[8*i+1]+4*stream[8*i+2]+8*stream[8*i+3]+
+            16*stream[8*i+4]+32*stream[8*i+5]+64*s[8*i+6]+128*stream[8*i+7]
+        end
     end
-    
-    function rnd_tester(byte_stream)
-        samples = length(byte_stream)-9
-        while samples % 3 != 0
-            samples -= 1
-        end
-        println("Analyzing ", samples, " UInt8 numbers...")
-        # 3D Scatter
-        fig1 = Plots.scatter3d(byte_stream[1:3:samples], byte_stream[2:3:samples], byte_stream[3:3:samples], 
-                               markercolor = :blue,
-                               markershape = :cross,
-                               markersize  = 0.5,
-                               opacity = 0.1,
-                               label= nothing,
-                               tickfont=("times", 12),
-                               size = (1024, 768)
-                               )  
-        # Plots.xaxis!(lims=(0, 255))
-        # Plots.yaxis!(lims=(0, 255))
-        # Plots.zaxis!(lims=(0, 255))
-        # Histogram
-        fig2 = Plots.histogram(byte_stream, bins = 256, label= nothing)
-        # Random walk
-        x = Array{Float64}(undef, samples)
-        fill!(x, 0)
-        μ = Statistics.mean(byte_stream)
-        println("Statistical mean of byte_stream: ", μ)
-        for i=2:samples
-            x[i] = x[i-1] + byte_stream[i] - μ
-        end
-        fig3 = Plots.plot(1:samples, x, label= nothing, size = (1024, 768))
-    
-        display(fig1)
-        savefig(fig1, "./random_img/scatter3d.pdf")
-        display(fig2)
-        savefig(fig2, "./random_img/histogram.pdf")
-        display(fig3)
-        savefig(fig3, "./random_img/random_walk.pdf")
+    println("Byte stream generated")
+    println("mean: ", Statistics.mean(byte_stream))
+
+    rnd_tester(byte_stream)
+    return byte_stream
+end
+
+function rnd_tester(byte_stream)
+    samples = length(byte_stream)-9
+    while samples % 3 != 0
+        samples -= 1
     end
+    println("Analyzing ", samples, " UInt8 numbers...")
+    # 3D Scatter
+    fig1 = Plots.scatter3d(byte_stream[1:3:samples], byte_stream[2:3:samples], byte_stream[3:3:samples], 
+                           markercolor = :blue,
+                           markershape = :cross,
+                           markersize  = 0.5,
+                           opacity = 0.1,
+                           label= nothing,
+                           tickfont=("times", 12),
+                           size = (1024, 768)
+                           )  
+    # Histogram
+    fig2 = Plots.histogram(byte_stream, bins = 256, label= nothing)
+    # Random walk
+    x = Array{Float64}(undef, samples)
+    fill!(x, 0)
+    mu = Statistics.mean(byte_stream)
+    println("Statistical mean of byte_stream: ", mu)
+    for i=2:samples
+        x[i] = x[i-1] + byte_stream[i] - 127.5
+    end
+    fig3 = Plots.plot(1:samples, x, label= nothing, size = (1024, 768))
+
+    display(fig1)
+    savefig(fig1, "./random_img/scatter3d.pdf")
+    display(fig2)
+    savefig(fig2, "./random_img/histogram.pdf")
+    display(fig3)
+    savefig(fig3, "./random_img/random_walk.pdf")
+end
     \end{lstlisting}
 \end{mdframed} 
 \end{document}
