@@ -313,9 +313,6 @@ INPUT /home/lorenzi/QOL/grangier-experiment/tex/../images/before.pdf
 INPUT /home/lorenzi/QOL/grangier-experiment/tex/../images/after.pdf
 INPUT /home/lorenzi/QOL/grangier-experiment/tex/../images/after.pdf
 INPUT /home/lorenzi/QOL/grangier-experiment/tex/../images/after.pdf
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm
-INPUT /usr/share/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm
 INPUT /home/lorenzi/QOL/grangier-experiment/tex/../images/alpha.png
 INPUT /home/lorenzi/QOL/grangier-experiment/tex/../images/alpha.png
 INPUT /home/lorenzi/QOL/grangier-experiment/tex/../images/alpha.png
@@ -344,7 +341,6 @@ INPUT /usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolF.enc
 INPUT /usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolE.enc
 INPUT /usr/share/texmf-dist/fonts/type1/public/mnsymbol/MnSymbol10.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/mnsymbol/MnSymbol7.pfb
-INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb
 INPUT /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb

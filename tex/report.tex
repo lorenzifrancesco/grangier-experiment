@@ -72,7 +72,7 @@ roundcorner=5pt}
 \renewcommand{\baselinestretch}{1}
 
 \title{\textsc{Report 2 - Grangier-Roger-Aspect experiment analysis}}
-\author{Francesco Lorenzi,      October 2020}
+\author{Francesco Lorenzi,      October-November 2020}
 \date{}
 \begin{document}
 \maketitle
@@ -90,7 +90,7 @@ The purpose of this report is twofold: in a first part a statistical analysis wi
 In a second part, an application of photon arrival statistics is shown: using a dataset from coherent light photon detection, random integers are generated and analyzed using various visual techniques.
 
 \section{Photon indivisibility experiment}
-The experiment developed by P. Grangier, G. Roger and A. Aspect in 1986 consist in verifying, by using statistical methods on photomultipliers hits, that a single  photon, after impinging on a beam splitter, is present in only one of the beams after, and so it is indivisible. The statistical outcome is expressed in terms of \emph{correlation} between events occurences in the transmitted and reflected channels: the result highlight how a very strong \emph{anticorrelation} between events is found.
+The experiment developed by P. Grangier, G. Roger and A. Aspect in 1986 consist in verifying, by using statistical methods on photomultipliers hits, that a single  photon, after impinging on a beam splitter, cannot be effectively divided, and preserves its unity. The statistical outcome is expressed in terms of \emph{correlation} between photodetector events in the transmitted and reflected branch: the result highlight a very strong \emph{anticorrelation} between these events.
 
 From the theoretical point of view, this experiment confirms the quanized nature of radiation, as the classical model for photodetection, which predicts correlation between detection along the two branches, is completely contradicted by the data.
 \subsection*{Experimental and statistical setup}
@@ -119,22 +119,23 @@ The optical bench setup is shown in Figure \ref{our}: all the pulses from the ph
         \caption{Experimental setup scheme}
     \end{figure}
 \end{mdframed}
-For every gate event which is associated with at least an event in the reflected or transmitted channel (and therefore can be considered as an event not belonging to noise of the gate detector), there is a constant probability $p_r$ and $p_t$ to have an event in these channel.
+For every gate event, there is a constant probability $p_r$ and $p_t$ to have an event respectively in the $R$ and $T$ channels, within the temporal window of the gate function. 
 
 In fact, we can define two Bernoulli random variables $X_r \sim B(p_r)$ and $X_t \sim B(p_t)$ which represents the result of measurement associated with each gate event. In this sense all the data collected can be represented as a stochastic process of i.i.d. variables. Each measurement will be called a \emph{double} coincidence if only one of the two realizations is $1$, and \emph{triple} coincidence if they are both $1$. 
+If we call the probability of a triple coincidence $p_c$, it can't be assessed without knowing the correlation between the two variables, as the corresponding Bernoulli random variable is the product $X_r X_t$.
 
 The physical problem is addressed by observing the correlation between the random variables, using the following definition of correlation coefficient: 
 \begin{equation*}
     \alpha = \frac{p_c}{p_r p_t} = \frac{\E[X_r X_t]}{\E[X_r]\E[X_t]}.
 \end{equation*}
 If $\alpha > 1$ the variables are \emph{correlated}, and the classical model is confirmed, indeed if $\alpha < 1$ the variables are \emph{anticorrelated}, and the classical model is rejected in favour of the quantum model. This follows naturally from the concept of a photon indivisibility: if the photon can't be splitted we expect to never find triple coincidences.
-Needless to say, we can only have an estimate of this parameter from experimental data: this is carried out as usual extracting a sample mean estimate using the following estimator: if $N_1$ is the number of valid gate events,
+Needless to say, we can only have an estimate of this parameter from experimental data: this is carried out as usual extracting a sample mean estimate using the following estimator: if $N_1$ is the number of valid gate events (associated with $R$ or $T$ events),
 \begin{equation*}
-    \hat{\alpha} = \frac{\hat{p_c}}{\hat{p_r} \hat{p_t}} = \frac{N_1 \sum_{i=1}^{N_1} X_r X_t}{\sum_{i=1}^{N_1} X_r\sum_{i=1}^{N_1} X_t}.
+    \hat{\alpha} = \frac{\hat{p_c}}{\hat{p_r} \hat{p_t}} = \frac{N_1 \sum_{i=1}^{N_1} X_r X_t}{\sum_{i=1}^{N_1} X_r\sum_{i=1}^{N_1} X_t},
 \end{equation*}
 Further comments on this estimator will be presented in the interpretation of result section.
 \subsection*{Analysis}
-As anticipated, before counting double and triple coincidences, a preprocessing step is necessary to remove noise. First of all, we reject events on the same channel which are distanced by less than $3900$ machine time units, or $MTU$ (defined by $1 MTU = 80.955 ps$). In fact, events whose difference in time is less than $\approx 0.315 \mu s$ could be \emph{afterpulses}, artifacts of the detection devices. After this passage the interarrival time of the three channels is plotted in Figure \ref{exps}, from which we can confirm that the light used is of coherent type, as it follows a Poisson arrival statistics.
+As anticipated, before counting double and triple coincidences, a pre-processing step is necessary to remove noise. First of all, we reject events on the same channel which are distanced by less than $3900$ machine time units, or $MTU$ (defined by $1 MTU = 80.955 ps$). In fact, events whose difference in time is less than $\approx 0.315 \mu s$ could be \emph{afterpulses}, artifacts of the detection devices. After this passage the interarrival time of the three channels is plotted in Figure \ref{exps}, from which we can confirm that the light used is of coherent type, as it follows a Poisson arrival statistics.
 \begin{mdframed}
     \begin{figure}[H]
         \centering
@@ -146,10 +147,10 @@ As anticipated, before counting double and triple coincidences, a preprocessing 
 
 In a second step, we must filter the data with a suitable \emph{gate} function, which will be triggered by the events on the gate channel, and will detect events from the other channels which are included in a well defined \emph{window}. 
 
-In order to build a correct gate window, we notice that the free air path of photons in the three branches of the optical setup, as well as the difference in the length of the coaxial cables connecting the detector to the time-tagger, can induce a differential time delay of events linked to the same photon pair. So we shall not limit ourselves in looking of equality of time tags as coincidences, as the reflection and/or transmission events related may occur a little time before or after each gate event. By analyzing the total distribution of every channel counts, it will be possible to deduce an estimate of the differential delay of the T and R channels with respect to the nearest gate event.
+In order to build a correct gate window, we notice that the free air path of photons in the three branches of the optical setup, as well as the difference in the length of the coaxial cables connecting the detector to the time-tagger, can induce a differential time delay of events linked to the same photon pair. So we shall not limit ourselves in looking of equality of time tags as coincidences, as the reflection and/or transmission events related may occur a little time before or after each gate event. By analyzing the total distribution of every channel counts, it will be possible to deduce an estimate of the differential delay of the $T$ and $R$ channels with respect to the nearest gate event.
 
 To facilitate further the recognition of delayed events, we filter the data of the transmitted and reflected channels to be in a strict interval near each gate event.
-In general, if we have two photons belonging to the same pair, the differential delay of two detections, on an arbitrary couple of detectors, must be less that a given time. This can be said for \emph{physical reasons}: the pulses reach the time-tagger's front end after the propagation of each photon along the optical bench, and of the signal along the RG cable. Considering the order of magnitude of the lenghts in laboratory, we deduce that the maximum time delay must be in the order of $\sim 10 ns$, so we select only events around $\pm 100 MTU$ away from the nearest gate event. The outcome of this filtering is shown in Figure \ref{before} for the interval $[-100, 0]$, which show only noise, and in Figure \ref{after} for the interval $[0, +100]$ in which bell-shaped delay curves indicates the real delayed occurences.
+In general, if we have two photons belonging to the same pair, the differential delay of two detections, on an arbitrary couple of detectors, must be less that a given time. This can be said for \emph{physical reasons}: the pulses reach the time-tagger's front end after the propagation of each photon along the optical bench, and of the signal along the coaxial cable. Considering the order of magnitude of the lenghts in laboratory, we deduce that the maximum time delay must be in the order of $\sim 10 ns$, so we select only events around $\pm 100 MTU$ away from the nearest gate event. The outcome of this filtering is shown in Figure \ref{before} for the interval $[-100, 0]$, which show only noise, and in Figure \ref{after} for the interval $[0, +100]$ in which bell-shaped delay curves indicate the real delayed occurences.
 \begin{mdframed}
     \begin{figure}[H]
         \begin{subfigure}{\textwidth}
@@ -168,40 +169,40 @@ In general, if we have two photons belonging to the same pair, the differential 
         \caption{Analysis of inter-channel delay}
     \end{figure}
 \end{mdframed}
-So we deduce that, in mean, the significant events in the channel R follows the gate event by $\approx 22 MTU$ , and the ones in the T channel follow the gate event by $\approx 54 MTU$.
-In conclusion, using the hypotesis that the differential delay follows approximatively  a normal distribution (which can be justified using the Central Limit Theorem), the standard deviations for each bell can be computed using the sample variance, and therefore the \emph{gate} signal is tailored to be a \emph{window} centered in the mean, and of width equal to a desired number of. That windows are shown in Figure \ref{after}, and are of the form $[(t_{Gi} + \mu) -2\sigma; \; (t_{Gi} + \mu) + 2\sigma]$ where $t_{Gi}$ is the time of the $i$-th gate event. Using the $\pm 2 \sigma$ interval, we expect to include in that way the $95\%$ of events. This construction of the gate window considers all the event belonging to the external of the windows as \emph{noise}.  
+So we deduce that, in mean, the significant events in the channel $R$ follow the gate event by $\approx 22 MTU$ , and the ones in the $T$ channel follow the gate event by $\approx 54 MTU$.
+In conclusion, using the hypotesis that the differential delay is approximatively normally distributed (which can be justified using the Central Limit Theorem), the standard deviations for each bell can be computed using the sample variance, and therefore the \emph{gate} signal is tailored to be a \emph{window} centered in the mean, and of width equal to a desired number of standard deviation, which, in this case, is choosen to be 2. That windows are shown in Figure \ref{after}, and are of the form $[(t_{Gi} + \mu) -2\sigma; \; (t_{Gi} + \mu) + 2\sigma]$ where $t_{Gi}$ is the time of the $i$-th gate event. Using the $\pm 2 \sigma$ interval, we expect to include in that way the $95\%$ of events. This construction of the gate window  considers all the event belonging to the external of the windows as \emph{noise}.  
 
 \subsection*{Interpretation of results and conclusions}
 By filtering the events with the gate function described in the previous paragraph, we are able to measure the realization frequencies associated to the random variables $X_r, \, X_t$. The results are shown in Table \ref{result}, along with estimated errors.
-In order to compute the errors, the sample variance is used to deduce the standard deviation $\hat{\sigma}_{p}$. For a Bernoulli random variable of estimated probability $\hat{p}$ it is calculated as
+In order to compute the errors, the sample variance is used to deduce the standard deviation $\sigma_{p}$. For a Bernoulli random variable of estimated probability $p$ it is calculated as
 \begin{equation*}
-    \hat{\sigma}_{p} = \sqrt{\frac{\hat{p}(1-\hat{p})}{N_1-1}}
+    \sigma_{p} = \sqrt{\frac{p(1-p)}{N_1-1}}
 \end{equation*}
 using the Bessel correction at the denominator.
 
-As for the error in $\hat{\alpha}$, a similar estimate is not readily applicable, as there is no trivial statistical description of this estimator. However, a basic error propagation extimate, using Taylor series, is carried out using the standard deviations of the probabilities. 
+As for the error in $\hat{\alpha}$, a similar estimate is not readily applicable, as there is no trivial probabilistic description of this estimator. However, a basic error propagation estimate, using Taylor series, is carried out using the standard deviations of the probabilities as errors to be propagated. 
 \renewcommand{\arraystretch}{1.5}
 \begin{mdframed}
     \begin{table}[H]
         \centering
         \begin{tabular}{|c|c|c|}
             \hline
-            $\hat{p}_t (\mathbf{x})$ & $0.5130 \pm 0.003017$\\
+            $p_t$ & $0.5130 \pm 0.003017$\\
             \hline
-            $\hat{p}_r (\mathbf{x})$ & $0.4871 \pm 0.003017$\\
+            $p_r$ & $0.4871 \pm 0.003017$\\
             \hline
-            $\hat{p}_c (\mathbf{x})$ & $(3.6429 \pm 3.6429) \cdot 10^{-5}$\\
+            $p_c$ & $(3.6429 \pm 3.6429) \cdot 10^{-5}$\\
             \hline
-            $\hat{\alpha} (\mathbf{x})$ & $(1.458  \pm 1.476) \cdot 10^{-4}$\\
+            $\alpha$ & $(1.458  \pm 1.476) \cdot 10^{-4}$\\
             \hline
         \end{tabular}
-        \caption{Results}
+        \caption{Estimates of probabilites and correlation from data}
         \label{result}
     \end{table}
 \end{mdframed}
-It may seem a problem that the estimated errors on $\hat{p}_c$ and $\hat{\alpha}$ are so large to be comparable to the actual magnitudes, but this is due to the poor statistics of the sample of triple coincidences: in fact, only 1 over 27451 gate events leads to a triple coincidence, and this greatly compromises the accuracy of the probability estimations. 
+It may seem a problem that the estimated errors on $p_c$ and $\alpha$ are so large to be comparable to the actual magnitudes, but this is due to the poor statistics of the sample of triple coincidences: in fact, only 1 over 27451 gate events leads to a triple coincidence, and this greatly compromises the accuracy of the probability estimations. 
 
-Nonetheless this great uncertainty \emph{does not invalidate the physical conclusions}: this value of $\alpha$ shows a near-perfect anticorrelation, and is in complete contradiction whith respect to the classical theory. 
+Nonetheless this great uncertainty \emph{does not invalidate the physical conclusion}: this value of $\alpha$ shows a near-perfect anticorrelation, and is in complete contradiction with respect to the classical theory. 
 
 
 \begin{mdframed}
@@ -212,51 +213,56 @@ Nonetheless this great uncertainty \emph{does not invalidate the physical conclu
         \label{alpha}
     \end{figure}
 \end{mdframed}
-In addition, the result on $\alpha$ and it's error seem to be compatible with the result obtained by Grangier et. al. shown in Figure \ref{alpha}. In the case of collected data, after the filtering, the average gate trigger rate is $\approx 1$, so it is extremely low with respect to the order of magnitude of the one of the original experiment.
-So the aim of the experiment is met: this experiment validate the indivisibility of the photons, and, in spite of the classical theory of EM fields, it shows a peculiar quantistic feature of reality. 
+In addition, the result on $\alpha$ and it's error seem to be compatible with the result obtained by Grangier et. al. shown in Figure \ref{alpha}. In the horizontal axis there is the average gate trigger rate, which in the case of the collected data, after the filtering,  is $\approx 1 Hz$, so it is extremely low with respect to the order of magnitude of the one of the original experiment. This justifies such a low value of $\alpha$ with respect of the values shown in this plot.
 
+In conclusion, the scope of the experiment is met: this experiment validate the indivisibility of the photons, and, in spite of the classical theory of EM fields, it shows a peculiar quantistic feature of reality. 
+
+\clearpage
 \section{Random Number Generation}
 In this report two methods of obtaining streams of random bits (i.e. 
  processes of independent and identically distributed Bernoulli $(p = 0.5)$ random variables) are presented.
- Starting from a coherent source of light, the photon arrival times are collected by a time-tagger, so the difference between the arrivals tags represents a realization of a process of exponential random variables. 
- The two methods differ mainly in the fact that their algorithms needs different resources: the first one can operate directly on a continuous stream of photon arrivals, whereas the second needs to scan all the sequence of arrivals before generating, in a second scan, the random bits. We will call the first one \emph{Local difference} method, and the second \emph{Median}, for reasons that will be clear soon.
+ Starting from a coherent source of light, the photon arrival times are collected by a time-tagger, so the difference between the arrivals tags represents a realization of a process of i.i.d. exponential random variables. 
+
+ The two methods presented differ mainly in the fact that their algorithms needs different resources: the first one can operate directly on a continuous stream of photon arrivals, whereas the second needs to scan all the sequence of arrivals before generating, in a second scan, the random bits. We will call the first one \emph{Local difference} method, and the second \emph{Median}, for reasons that will be explained in the next paragraphs.
 \subsection*{Local difference method}
-This algorithm can operate with constant memory over a stream of subsequent time tags, and works as follows:
+This algorithm can operate with constant memory over a stream of subsequent time tags, it is ideal for a real-time generation of data from a constantly running optical setup.
+The algorithm works as follows:
 \begin{enumerate}
-    \item generate from the time tags the vector of the differences between each one with the previous one (skip the first tag), 
-    \item select 4 subsequent differences and group them by pairs [(1, 2); (3, 4)], and compute the difference between the second element of the pair and the first one: a sequence $(\Delta_1$, $\Delta_2)$ of 2 values is obtained,
+    \item generate, from 5 subsequent time tags, a vector of the differences between each one with the previous one, which will be composed of 4 elements, 
+    \item group the differences by pairs, and compute a further  difference between the second element of the pair and the first one: a sequence of 2 values $(\Delta_1$, $\Delta_2)$ is obtained,
     \item compare the values: if $\Delta_1 \geq \Delta_2$ set the bit to 1, otherwise set the bit to 0, 
-    \item iterate 2. to 3. over all the other subsequent group of 8 time tags, and save the deduced bits.
+    \item execute 1. to 3. over all the incoming time-tags.
 \end{enumerate}
 Using the vector of 4353849 time tags belonging to the Arecchi wheel experiment, we generate $\lfloor4353849/(4\cdot 8)\rfloor = 136057$ bytes which represents numbers from 0 to 255.
 
-Using them as triplets of coordinates it is possible to build a 3D scatter plot to show their uniform distribution among space. In Figure \ref{local} this representation is shown as well as the histogram of frequencies of numbers.
+Using them as triplets of coordinates it is possible to build a 3D scatter plot to show their uniform distribution among space. In Figure \ref{local} this representation, along with and the histogram of frequencies in Figure \ref{loca}.
 \begin{mdframed}
     \begin{figure}[H]
-        \begin{subfigure}{\textwidth}
             \centering
             \includegraphics[width = \textwidth]{../random_img/d2-scatter3d.pdf}
-            \caption{Scatter 3D}
-        \end{subfigure}
+            \caption{Local difference method, 3D Scatter}
+            \label{loca}
+        \end{figure}
+    \end{mdframed}
+    \begin{mdframed}
 
-        \begin{subfigure}{\textwidth}
+        \begin{figure}[H]
             \centering
             \includegraphics[width = \textwidth]{../random_img/d2-histogram.pdf}
-            \caption{Histogram}
-        \end{subfigure}
-        \caption{Local difference method}
+        \caption{Local difference method, histogram}
         \label{local}
     \end{figure}
 \end{mdframed}
 
 \subsection*{Median method}
-This algorithm can operate with a double examination of the stream of the time tags, and works as follows:
+This algorithm can operate with a double examination of the stream of the time tags, the first one is used to deduce the median of the distribution, and the second one exploits a properity of the median to generate the random bits: given a realization from the distribution, it has $50\%$ probability to be above or below the median. We recall that for an exponentially distributed random variable $X \sim Exp(\lambda)$, the median is $\tilde{x} = \ln(2)/\lambda$.
+The algorithm works as follows:
 \begin{enumerate}
     \item generate from the time tags the vector of the differences between each one with the previous one (skip the first tag),
-    \item compute the sample median $\widetilde{d}$ of the differences vector (or alternatively, assuming an exponential distribution, compute the sample mean and obtain the median multiplying it by $ln(2)$),
+    \item compute the sample median $\widetilde{d}$ of the differences vector (or alternatively, assuming an exponential distribution, compute the sample mean and obtain the median multiplying it by $\ln(2)$),
     \item for each differences sample $d_i$, set a bit to 1 if $d_i \geq \widetilde{d}$, otherwise set it to 0.
 \end{enumerate}
-This algorithm provides a generation rate of 4 times the Local difference method, at the expense of a greater computing effort, as can be noticed by the plots in Figure \ref{median}, where there are $\lfloor 4353849/8\rfloor = 544231$ bytes.
+This algorithm provides a generation rate of 4 times the Local difference method rate, at the expense of a greater computing effort, as can be noticed by the plots in Figure \ref{median}, where there are $\lfloor 4353849/8\rfloor = 544231$ bytes.
 \begin{mdframed}
     \begin{figure}[H]
         \begin{subfigure}{\textwidth}
@@ -276,12 +282,17 @@ This algorithm provides a generation rate of 4 times the Local difference method
 \end{mdframed}
 
 
-\subsection*{An even higher bit-rate proposal}
-If a complete statistical description of the Poisson arrival process is provided (or estimated observing the dataset), a much higher bit-rate method is easily developed:
-We use the theorem of \emph{Universality of uniform r.v.} to obtain a continuous Uniform r.v. $\sim U([0, 1])$ from the Exponential. Once we have obtained that, we can divide the interval $[0, 1]$ in, for example, $256$ sections, and consider for each hit in that section, the corresponding $8$-bit number. The efficiency in this way can be scaled of a factor of $8$ or higher, keeping in mind that the time-tagger has not infinite resolution, and saves the events in a fundamentally discrete space of time tags.
-The obvious problem in this method is that the statistical description of the incoming process can only be estimated, so the random bits will be unreliable.
+\subsection*{An even higher efficiency proposal}
+If a complete statistical description of the exponential interarrival time process is provided, a much higher rate method is easily developed: using a simple argument on functions of random variables, it can be shown that, if the random variable describing the process is $X \sim Exp(\lambda)$, with cumulative distribution function 
+\begin{equation}\label{ewn}
+    F_X(x) = 1-\exp[-\lambda x]
+\end{equation} 
+the variable $Y = F_X(X)$ is uniform in the $[0, 1]$ interval. Once we have obtained that new variable, we can divide the interval $[0, 1]$ in, for example, $256$ even sections, and consider, for each interarrival time value, the $8$-bit number corresponding to the section in which it's transformed value will fall. Each of these sections is equiprobable, so we expect to generate a uniform distribution of $8$-bit numbers. 
 
+The efficiency with respect to the median method can be scaled in this way of a factor of $8$ or higher.
+However, this method is of difficult implementation, as it suffers from the  statistical description of the incoming process, which can only be estimated, and from the not perfect time resolution of the time-tagger, that saves the events in a fundamentally discrete space of time tags. It also needs an additional step for each interarrival time to be transformed as equation (\ref{ewn}) indicates.
 
+\hrulefill 
 \bibliography{References}
 \begin{thebibliography}{99}
   \bibitem{grangier} P.Grangier, G.Roger, A.Aspect - \emph{Experimental evidence for a photon anticorrelation effects on a beam splitter: a new light on single-photon interferences} (Europhys. Lett., 1 (4), pp. 173-179, 1986)
@@ -291,7 +302,7 @@ The obvious problem in this method is that the statistical description of the in
 
 
 
-
+\clearpage
 \subsection*{Code}
 The code is written in Julia Programming Language.
 

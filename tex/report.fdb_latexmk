@@ -1,11 +1,11 @@
 # Fdb version 3
-["bibtex report"] 1604523502 "report.aux" "report.bbl" "report" 1604523503
+["bibtex report"] 1604529410 "report.aux" "report.bbl" "report" 1604529413
   "References.bib" 0 -1 0 ""
-  "report.aux" 1604523502 2262 c04cc13ad2ffd5d8bc7a8de7339b1dab "pdflatex"
+  "report.aux" 1604529412 2552 f75eb60bfd99eeb04dfb2c2974488a8e "pdflatex"
   (generated)
-  "report.blg"
   "report.bbl"
-["pdflatex"] 1604523500 "/home/lorenzi/QOL/grangier-experiment/tex/report.tex" "/home/lorenzi/QOL/grangier-experiment/tex/report.pdf" "report" 1604523503
+  "report.blg"
+["pdflatex"] 1604529410 "/home/lorenzi/QOL/grangier-experiment/tex/report.tex" "/home/lorenzi/QOL/grangier-experiment/tex/report.pdf" "report" 1604529413
   "../images/after.pdf" 1604341432 14761 da7bc16ce575895c212a24156bf430bd ""
   "../images/alpha.png" 1604499676 10908 b78fb5bdb14bc41a520fca99bc53562b ""
   "../images/before.pdf" 1604341517 16191 9d4c777a22716e129f0e319d49b2bd6b ""
@@ -16,8 +16,8 @@
   "../random_img/d2-scatter3d.pdf" 1604515619 432216 6f1e2a63358f81f9e8fa008ba97727bd ""
   "../random_img/naif-histogram.pdf" 1604303902 13268 5cc9a815bd05f02db32d21b7baa8eeab ""
   "../random_img/naif-scatter3d.pdf" 1604303902 669276 22fae2ae5423eb8b28fbb45dcada1801 ""
-  "/home/lorenzi/QOL/grangier-experiment/tex/report.aux" 1604523502 2262 c04cc13ad2ffd5d8bc7a8de7339b1dab ""
-  "/home/lorenzi/QOL/grangier-experiment/tex/report.tex" 1604523500 38056 51331721c0137685142b974306117ce0 ""
+  "/home/lorenzi/QOL/grangier-experiment/tex/report.aux" 1604529412 2552 f75eb60bfd99eeb04dfb2c2974488a8e ""
+  "/home/lorenzi/QOL/grangier-experiment/tex/report.tex" 1604529410 39378 7a5f1153a690d6e8df48d7518eb67df2 ""
   "/usr/local/share/texmf/tex/latex/pythonhighlight/pythonhighlight.sty" 1590323652 4900 3e3ef6513daecbdc80ef326918df2377 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1591545468 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/share/texmf-dist/fonts/enc/dvips/mnsymbol/MnSymbolA.enc" 1591522338 3341 78e600b269762aa2a25a5293cc4535c0 ""
@@ -47,9 +47,6 @@
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm" 1591545468 908 2921f8a10601f252058503cc6570e581 ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm" 1591545468 940 75ac932a52f80982a9f8ea75d03a34cf ""
   "/usr/share/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1591545468 940 228d6584342e91276bf566bcf9716b83 ""
-  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmbx10.tfm" 1591545468 1328 c834bbb027764024c09d3d2bf908b5f0 ""
-  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm" 1591545468 1332 f817c21a1ba54560425663374f1b651a ""
-  "/usr/share/texmf-dist/fonts/tfm/public/cm/cmbx7.tfm" 1591545468 1336 3125ccb448c1a09074e3aa4a9832f130 ""
   "/usr/share/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1591545468 1524 4414a8315f39513458b80dfc63bff03a ""
   "/usr/share/texmf-dist/fonts/tfm/public/cm/cmmi6.tfm" 1591545468 1512 f21f83efb36853c0b70002322c1ab3ad ""
   "/usr/share/texmf-dist/fonts/tfm/public/cm/cmmi8.tfm" 1591545468 1520 eccf95517727cb11801f4f1aee3a21b4 ""
@@ -92,7 +89,6 @@
   "/usr/share/texmf-dist/fonts/tfm/public/mnsymbol/MnSymbolF6.tfm" 1591522338 928 45610d12be5578208a2b25524ddb18ac ""
   "/usr/share/texmf-dist/fonts/tfm/public/mnsymbol/MnSymbolF7.tfm" 1591522338 928 daf8dc6a1b5f9d77266c8bca20202576 ""
   "/usr/share/texmf-dist/fonts/tfm/public/mnsymbol/MnSymbolF8.tfm" 1591522338 928 0e527254486d1fce95b15cf78ee2580a ""
-  "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb" 1591545468 34811 78b52f49e893bcba91bd7581cdc144c0 ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb" 1591545468 36299 5f9df58c2139e7edcf37c8fca4bd384d ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1591545468 36281 c355509802a035cadc5f15869451dcee ""
   "/usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1591545468 35752 024fb6c41858982481f6968b5fc26508 ""
@@ -246,12 +242,12 @@
   "/usr/share/texmf-dist/web2c/texmf.cnf" 1591545468 33301 a3134070eacafb10b1f371612ce2650d ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1602170036 4722222 4b413e68156ce7e2e152348ba071af0a ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1602170031 2514051 2ec297549d5121fcea25ce0191502b0b ""
-  "report.aux" 1604523502 2262 c04cc13ad2ffd5d8bc7a8de7339b1dab "pdflatex"
+  "report.aux" 1604529412 2552 f75eb60bfd99eeb04dfb2c2974488a8e "pdflatex"
   "report.bbl" 0 -1 0 "bibtex report"
-  "report.tex" 1604523500 38056 51331721c0137685142b974306117ce0 ""
+  "report.tex" 1604529410 39378 7a5f1153a690d6e8df48d7518eb67df2 ""
   (generated)
-  "report.log"
   "report.pdf"
-  "/home/lorenzi/QOL/grangier-experiment/tex/report.pdf"
-  "/home/lorenzi/QOL/grangier-experiment/tex/report.log"
   "report.aux"
+  "/home/lorenzi/QOL/grangier-experiment/tex/report.log"
+  "/home/lorenzi/QOL/grangier-experiment/tex/report.pdf"
+  "report.log"
