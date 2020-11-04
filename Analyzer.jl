@@ -365,6 +365,16 @@ function gated_counter((tags, k), params; mode = "confidence")
         @printf("\t P[double]         : %9.8f \n", prob_refl + prob_tran - 2 *prob_triple)
         @printf("\t P[triple]         : %9.8f \n", prob_triple)
         @printf("\t Alpha             : %9.8f \n", α)
+
+        sigma_r = sqrt(prob_refl*(1-prob_refl)/N_1)
+        sigma_t = sqrt(prob_tran*(1-prob_tran)/N_1)
+        sigma_c = sqrt(prob_triple*(1-prob_triple)/N_1)
+        @printf("p_r variance: %9.8f \n", sigma_r)
+        @printf("p_t variance: %9.8f \n", sigma_t)
+        @printf("p_c variance: %9.8f \n", sigma_c)
+        @printf(" variance: %9.8f \n", sigma_c/(prob_refl*prob_tran) + 
+                sigma_r * prob_triple/(prob_refl^2*prob_tran) +
+                sigma_t * prob_triple/(prob_refl*prob_tran^2))
     end
 end
 
